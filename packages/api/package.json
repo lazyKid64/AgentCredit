@@ -1,0 +1,10 @@
+{
+  "name": "@agentcredit/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js"
+  }
+}

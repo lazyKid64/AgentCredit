@@ -1,0 +1,5 @@
+score = "523"
+threshold = "750"
+agent_address = "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+commitment = "0x02adbd67725345811b03fa65d10015fb71391466b590d2b834e6aae66ffb9036"
+block_number = "1000000"

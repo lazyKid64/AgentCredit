@@ -1,0 +1,7 @@
+{
+  "name": "agentcredit-protocol",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
