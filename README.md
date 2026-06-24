@@ -1,77 +1,91 @@
 <div align="center">
-<h1>🏦 AgentCredit Protocol</h1>
 
-The On-Chain Credit Bureau for the Machine Economy
+# 🏦 AgentCredit Protocol
 
-The first cryptographic credit scoring system for AI agents —
-powered by x402 payment history, zero-knowledge proofs, and ERC-8004 identity
+### The On-Chain Credit Bureau for the Machine Economy
 
-![x402 Integration](https://img.shields.io/badge/x402-Compatible-blue?style=for-the-badge)
-![Noir ZK](https://img.shields.io/badge/ZK_Proofs-Noir-black?style=for-the-badge)
-![Base Sepolia](https://img.shields.io/badge/Network-Base_Sepolia-blue?style=for-the-badge)
-![Tests](https://img.shields.io/badge/Tests-7_passed-success?style=for-the-badge)
-![Coverage](https://img.shields.io/badge/Coverage-4.24%25-yellow?style=for-the-badge)
+**The first cryptographic credit scoring system for AI agents — powered by x402 payment history, zero-knowledge proofs, and ERC-8004 identity**
 
-<br />
+[![x402 Integration](https://img.shields.io/badge/x402-Compatible-blue?style=flat-square)](#)
+[![Noir ZK](https://img.shields.io/badge/ZK_Proofs-Noir-black?style=flat-square)](#)
+[![Base Sepolia](https://img.shields.io/badge/Network-Base_Sepolia-blue?style=flat-square)](#)
+[![Tests](https://img.shields.io/badge/Tests-7_passed-success?style=flat-square)](#8-testing)
+[![Coverage](https://img.shields.io/badge/Coverage-4.24%25-yellow?style=flat-square)](#8-testing)
 
-  <img src="https://img.shields.io/badge/Solidity-%23363636.svg?style=for-the-badge&logo=solidity&logoColor=white" alt="Solidity" />
-  <img src="https://img.shields.io/badge/Foundry-black?style=for-the-badge" alt="Foundry" />
-  <img src="https://img.shields.io/badge/Base_Sepolia-blue?style=for-the-badge" alt="Base Sepolia" />
-  <img src="https://img.shields.io/badge/Noir_ZK-black?style=for-the-badge" alt="Noir ZK" />
-  <img src="https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white" alt="Next JS" />
-  <img src="https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
-  <img src="https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <br />
-  <img src="https://img.shields.io/badge/Node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" alt="NodeJS" />
-  <img src="https://img.shields.io/badge/Express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB" alt="Express.js" />
-  <img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white" alt="GraphQL" />
-  <img src="https://img.shields.io/badge/The_Graph-0B0A1D?style=for-the-badge" alt="The Graph" />
-  <img src="https://img.shields.io/badge/Ruby-CC342D?style=for-the-badge&logo=ruby&logoColor=white" alt="Ruby" />
-  <img src="https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Shell" />
-  <img src="https://img.shields.io/badge/ZeroDev-purple?style=for-the-badge" alt="ZeroDev" />
-  <img src="https://img.shields.io/badge/ERC--4337-orange?style=for-the-badge" alt="ERC-4337" />
-  <img src="https://img.shields.io/badge/ERC--8004-orange?style=for-the-badge" alt="ERC-8004" />
-
-📖 Documentation · 🚀 Quick Start ·
-🔐 ZK Proofs · 🛠 API Reference ·
-🧪 Testing
+[![Solidity](https://img.shields.io/badge/Solidity-%23363636.svg?style=flat-square&logo=solidity&logoColor=white)](#)
+[![Foundry](https://img.shields.io/badge/Foundry-black?style=flat-square)](#)
+[![Next JS](https://img.shields.io/badge/Next.js-black?style=flat-square&logo=next.js&logoColor=white)](#)
+[![React](https://img.shields.io/badge/React-%2320232a.svg?style=flat-square&logo=react&logoColor=%2361DAFB)](#)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=flat-square&logo=tailwind-css&logoColor=white)](#)
+[![TypeScript](https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=flat-square&logo=typescript&logoColor=white)](#)
+[![NodeJS](https://img.shields.io/badge/Node.js-6DA55F?style=flat-square&logo=node.js&logoColor=white)](#)
+[![Express.js](https://img.shields.io/badge/Express.js-%23404d59.svg?style=flat-square&logo=express&logoColor=%2361DAFB)](#)
+[![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)](#)
+[![The Graph](https://img.shields.io/badge/The_Graph-0B0A1D?style=flat-square)](#)
+[![Ruby](https://img.shields.io/badge/Ruby-CC342D?style=flat-square&logo=ruby&logoColor=white)](#)
+[![Shell](https://img.shields.io/badge/Shell_Script-121011?style=flat-square&logo=gnu-bash&logoColor=white)](#)
+[![ZeroDev](https://img.shields.io/badge/ZeroDev-purple?style=flat-square)](#)
+[![ERC-4337](https://img.shields.io/badge/ERC--4337-orange?style=flat-square)](#)
+[![ERC-8004](https://img.shields.io/badge/ERC--8004-orange?style=flat-square)](#)
 
 </div>
 
-## 🤖 The Problem
+**AgentCredit** enables privacy-preserving, on-chain credit scores that unlock tiered pricing and paymaster deferred payments for AI agents.
 
-AI agents can pay. But can they be trusted?
+x402 has processed 165M+ payments — agents can transact autonomously. BUT every transaction is treated identically regardless of agent history. A new agent with 0 payments gets the same price as one with 10,000 payments. Services cannot verify agent trustworthiness within a single HTTP request lifecycle. The result: no incentive for agents to build payment reputation.
 
-x402 has processed 165M+ payments — agents can transact autonomously. BUT every transaction is treated identically regardless of agent history. A new agent with 0 payments gets the same price as one with 10,000 payments.
+## Addresses and the Transaction Hashes
 
-Services cannot verify agent trustworthiness within a single HTTP request lifecycle. The result: no incentive for agents to build payment reputation.
+`CreditRegistry:` [0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13](https://sepolia.basescan.org/address/0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13)
 
-## ✨ The Solution
+`CreditLinePaymaster:` Coming in V2
 
-AgentCredit enables privacy-preserving, on-chain credit scores that unlock tiered pricing and paymaster deferred payments for AI agents.
+`ZKVerifier:` Coming in V2
 
-| Feature | Description | Technology |
-| --- | --- | --- |
-| On-Chain Credit Score | 300–900 score computed from x402 payment history | Solidity, Foundry, The Graph |
-| ZK Credit Proofs | Prove score > threshold without revealing history | Noir (UltraPlonk), Barretenberg |
-| Tiered API Pricing | Gold/Silver/Unknown pricing in x402 402 headers | Node.js, Express, @x402/express |
-| Credit Line Paymaster | High-score agents defer payment via ERC-4337 | ZeroDev SDK |
-| ERC-8004 Integration | Score linked to portable AI agent identity NFTs | ERC-8004 Registry |
-| Privacy-Preserving | Full transaction history never leaves agent's wallet | Pedersen commitments |
-| Agent Dashboard | Score Lookup + ZK Proof Generator | Next.js, React, Tailwind, viem |
-| Blockchain Network | High-performance L2 execution environment | Base Sepolia |
-## 💻 Tech Stack
+## Table of Contents
 
-- **Smart Contracts & Blockchain**: Solidity, Foundry (Forge, Cast), Base Sepolia (L2)
-- **Zero-Knowledge Proofs**: Noir, UltraPlonk, Barretenberg, `@noir-lang/noir_js`, `@noir-lang/backend_barretenberg`
-- **Backend API & Middleware**: Node.js, Express, TypeScript, `@x402/express`
-- **Frontend Dashboard**: Next.js 14 (App Router), React, Tailwind CSS, `viem`
-- **Indexing & Data**: The Graph, GraphQL, AssemblyScript
-- **Identity & Accounts**: ERC-8004 (Identity NFTs), ERC-4337 (Account Abstraction), ZeroDev SDK
-- **Scripting & Tooling**: Shell Script, Ruby
+* [1. Overview](#1-overview)
+  * [1.1 Introduction](#11-introduction)
+  * [1.2 The AgentCredit Solution](#12-the-agentcredit-solution)
+  * [1.3 How It Works](#13-how-it-works)
+* [2. Architecture](#2-architecture)
+  * [2.1 High-Level Workflow](#21-high-level-workflow)
+  * [2.2 Component Summary](#22-component-summary)
+* [3. Features](#3-features)
+* [4. Technical Overview](#4-technical-overview)
+  * [4.1 Credit Score Formula](#41-credit-score-formula)
+  * [4.2 ZK Proof System](#42-zk-proof-system)
+* [5. API Reference](#5-api-reference)
+* [6. Getting Started](#6-getting-started)
+  * [6.1 Prerequisites](#61-prerequisites)
+  * [6.2 Installation](#62-installation)
+  * [6.3 Environment Setup](#63-environment-setup)
+  * [6.4 Run the Demo](#64-run-the-demo)
+* [7. Smart Contracts](#7-smart-contracts)
+* [8. Testing](#8-testing)
+* [9. Security](#9-security)
+* [10. Project Structure](#10-project-structure)
+* [11. Contributing](#11-contributing)
+* [12. Project License](#12-project-license)
 
-## 🔄 How It Works
+---
+
+## 1. Overview
+
+**AgentCredit** is a protocol that replaces the traditional approach of unverified identity in machine transactions with a single, unified continuous credit scoring distribution. Built on Base Sepolia using Noir ZK Proofs, it performs all pricing and validation mathematics entirely on-chain.
+
+### 1.1 Introduction
+
+**The problem we solve:** Existing API and protocol systems treat all autonomous agents equally. This means:
+- No incentives for good behavior or consistent payments
+- No way to verify trustworthiness without invasive identity checks
+- Capital inefficiencies for high-frequency trading agents
+
+### 1.2 The AgentCredit Solution
+
+AgentCredit replaces discrete payments with a continuous credit layer. By analyzing x402 payment history, AgentCredit computes a decentralized credit score from 300 to 900.
+
+### 1.3 How It Works
 
 1. **Credit Checking**: Agent checks current score and tier limits.
 2. **First Request**: Agent requests API and gets 402 Payment Required.
@@ -163,7 +177,9 @@ CreditRegistry-->>CreditRegistry: Score: 682 → 683
 💡 Key Insight: The ZK proof is generated once and cached for 12 hours (~3600 blocks).
 Subsequent requests within the window reuse the cached proof receipt — no re-proving needed.
 
-## 🏗️ Architecture
+## 2. Architecture
+
+### 2.1 High-Level Workflow
 
 AgentCredit consists of a modular framework allowing agents to fetch their score and prove logic entirely autonomously.
 
@@ -208,7 +224,7 @@ graph TB
     HOOK -->|records| REGISTRY
 ```
 
-### Component Summary
+### 2.2 Component Summary
 
 | Package | Purpose | Key Files |
 | --- | --- | --- |
@@ -218,66 +234,22 @@ graph TB
 | packages/api | Express x402 API | creditGate.ts, zkVerifier.ts, facilitatorHook.ts |
 | packages/dashboard | Next.js frontend | app/page.tsx, app/prove/page.tsx |
 
-## 🚀 Quick Start
+## 3. Features
 
-### Prerequisites
-* Node.js ≥ 20.0.0
-* Foundry (latest) — `curl -L https://foundry.paradigm.xyz | bash`
-* Nargo ≥ 0.38.0 — `curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash && noirup`
-* Git
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/lazyKid64/AgentCredit
-cd AgentCredit
-
-# Install all dependencies
-npm install
-
-# Install Foundry dependencies
-cd packages/contracts && forge install && cd ../..
-
-# Copy environment file
-cp .env.example .env
-# Fill in your RPC_URL and PRIVATE_KEY
-```
-
-### Environment Setup
-
-```env
-RPC_URL=https://base-sepolia.g.alchemy.com/v2/your_alchemy_key
-PRIVATE_KEY=0xyour_private_key
-CREDIT_REGISTRY_ADDRESS=0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13
-USDC_ADDRESS=0x036CbD53842c5426634e7929541eC2318f3dCF7e
-```
-
-| Variable | Required | Description |
+| Feature | Description | Technology |
 | --- | --- | --- |
-| RPC_URL | ✅ Yes | Base Sepolia RPC (get from Alchemy/QuickNode) |
-| PRIVATE_KEY | ✅ Yes | Deployer wallet private key (never commit!) |
-| CREDIT_REGISTRY_ADDRESS | ✅ Yes | Address of the Credit Registry |
-| USDC_ADDRESS | ✅ Yes | Address of the testnet USDC |
+| On-Chain Credit Score | 300–900 score computed from x402 payment history | Solidity, Foundry, The Graph |
+| ZK Credit Proofs | Prove score > threshold without revealing history | Noir (UltraPlonk), Barretenberg |
+| Tiered API Pricing | Gold/Silver/Unknown pricing in x402 402 headers | Node.js, Express, @x402/express |
+| Credit Line Paymaster | High-score agents defer payment via ERC-4337 | ZeroDev SDK |
+| ERC-8004 Integration | Score linked to portable AI agent identity NFTs | ERC-8004 Registry |
+| Privacy-Preserving | Full transaction history never leaves agent's wallet | Pedersen commitments |
+| Agent Dashboard | Score Lookup + ZK Proof Generator | Next.js, React, Tailwind, viem |
+| Blockchain Network | High-performance L2 execution environment | Base Sepolia |
 
-### Run the Demo
+## 4. Technical Overview
 
-```bash
-# 1. Run all tests
-cd packages/contracts && forge test -v
-
-# 2. Start the API
-cd packages/api && npm start
-
-# 3. Run the agent simulation
-npm run simulate
-
-# 4. Open the dashboard
-cd packages/dashboard && npm run dev
-# Visit http://localhost:3000
-```
-
-## 📊 Credit Score Formula
+### 4.1 Credit Score Formula
 
 AgentCredit relies on a weighted algorithm matching traditional FICO scoring principles but adapted for autonomous payment APIs.
 
@@ -298,11 +270,9 @@ Clamped to range [300, 900]
 | 🥈 Silver | 600–749 | 20% off | Agent B: 476 pts |
 | ⬜ Unknown | 300–599 | Standard price | Agent A: 491 pts |
 
-## 🔐 ZK Proof System
+### 4.2 ZK Proof System
 
 Zero-Knowledge Proofs in AgentCredit allow agents to authenticate their credit tiers without disclosing their actual absolute credit score or full historical metadata, achieving robust privacy.
-
-Furthermore, these cryptographic signatures permit single-request verification natively avoiding continuous on-chain read operations.
 
 ```noir
 // packages/circuits/credit_proof/src/main.nr
@@ -321,30 +291,7 @@ fn main(
 }
 ```
 
-### Proof Generation
-
-```typescript
-import { Noir } from '@noir-lang/noir_js';
-import { BarretenbergBackend } from '@noir-lang/backend_barretenberg';
-import circuit from './circuits/credit_proof.json';
-
-const backend = new BarretenbergBackend(circuit);
-const noir = new Noir(circuit, backend);
-
-const { proof, publicInputs } = await noir.generateProof({
-  score: agentScore.toString(),        // private
-  threshold: "600",                    // prove score ≥ 600 (Silver)
-  agent_address: agentAddress,
-  commitment: onChainCommitment,
-  block_number: currentBlock.toString()
-});
-
-// Encode for HTTP header
-const proofHeader = btoa(JSON.stringify({ proof, publicInputs }));
-// Include as: X-CREDIT-PROOF: [proofHeader]
-```
-
-## 🛠️ API Reference
+## 5. API Reference
 
 ### GET /api/score/:address
 
@@ -416,7 +363,66 @@ curl -v -H "X-CREDIT-PROOF: eyJwcm9vZiI6IjB4Li4uIiwicHVibGljSW5wdXRzIjpbXX0=" ht
 }
 ```
 
-## 📜 Smart Contracts
+## 6. Getting Started
+
+### 6.1 Prerequisites
+* Node.js ≥ 20.0.0
+* Foundry (latest) — `curl -L https://foundry.paradigm.xyz | bash`
+* Nargo ≥ 0.38.0 — `curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash && noirup`
+* Git
+
+### 6.2 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/lazyKid64/AgentCredit
+cd AgentCredit
+
+# Install all dependencies
+npm install
+
+# Install Foundry dependencies
+cd packages/contracts && forge install && cd ../..
+
+# Copy environment file
+cp .env.example .env
+# Fill in your RPC_URL and PRIVATE_KEY
+```
+
+### 6.3 Environment Setup
+
+```env
+RPC_URL=https://base-sepolia.g.alchemy.com/v2/your_alchemy_key
+PRIVATE_KEY=0xyour_private_key
+CREDIT_REGISTRY_ADDRESS=0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13
+USDC_ADDRESS=0x036CbD53842c5426634e7929541eC2318f3dCF7e
+```
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| RPC_URL | ✅ Yes | Base Sepolia RPC (get from Alchemy/QuickNode) |
+| PRIVATE_KEY | ✅ Yes | Deployer wallet private key (never commit!) |
+| CREDIT_REGISTRY_ADDRESS | ✅ Yes | Address of the Credit Registry |
+| USDC_ADDRESS | ✅ Yes | Address of the testnet USDC |
+
+### 6.4 Run the Demo
+
+```bash
+# 1. Run all tests
+cd packages/contracts && forge test -v
+
+# 2. Start the API
+cd packages/api && npm start
+
+# 3. Run the agent simulation
+npm run simulate
+
+# 4. Open the dashboard
+cd packages/dashboard && npm run dev
+# Visit http://localhost:3000
+```
+
+## 7. Smart Contracts
 
 AgentCredit contracts handle the decentralized state and on-chain hashing validation.
 
@@ -461,7 +467,7 @@ AgentCredit contracts handle the decentralized state and on-chain hashing valida
 
 </details>
 
-## 🧪 Testing
+## 8. Testing
 
 AgentCredit adopts strong testing requirements using Foundry and Mocha/Chai.
 
@@ -497,7 +503,7 @@ Tests passed:
 - `test_getScore_returnsDefault`
 - `test_getCommitment_returnsHash`
 
-## 🛡️ Security
+## 9. Security
 
 | Vulnerability | Mitigation | Status |
 | --- | --- | --- |
@@ -511,9 +517,8 @@ Tests passed:
 
 ⚠️ Not yet audited. This codebase has not undergone a professional security audit.
 It is deployed on Base Sepolia (testnet) only. Do not use with real funds.
-Production audit roadmap: [link to PRODUCTION.md if it exists]
 
-## 📁 Project Structure
+## 10. Project Structure
 
 ```text
 agentcredit/
@@ -534,24 +539,13 @@ agentcredit/
 - `dashboard/`: Next.js Web UI showing agent stats.
 - `indexer/`: The Graph indexing component.
 
-## 🤝 Contributing
+## 11. Contributing
 
 How to run tests before submitting a PR:
 - Code style: no `any` in TypeScript, Solidity follows naming conventions
 - Branch naming: `feature/`, `fix/`, `test/`
 - PR must include: description of change, test additions, verification command output
 
-## 📄 License
+## 12. Project License
 
 MIT License — see LICENSE for details.
-
-<div align="center">
-Built for the x402 ecosystem 🌐
-
-AgentCredit is the missing credit layer for the machine-to-machine economy.
-
-⭐ Star this repo ·
-🐛 Report a Bug ·
-💬 Request a Feature
-
-</div>
