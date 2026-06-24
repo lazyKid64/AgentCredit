@@ -1,5 +1,5 @@
 <div align="center">
-🏦 AgentCredit Protocol
+<h1>🏦 AgentCredit Protocol</h1>
 
 The On-Chain Credit Bureau for the Machine Economy
 
@@ -32,12 +32,14 @@ AgentCredit enables privacy-preserving, on-chain credit scores that unlock tiere
 
 | Feature | Description | Technology |
 | --- | --- | --- |
-| On-Chain Credit Score | 300–900 score computed from x402 payment history | Solidity + The Graph |
-| ZK Credit Proofs | Prove score > threshold without revealing history | Noir (UltraPlonk) |
-| Tiered API Pricing | Gold/Silver/Unknown pricing in x402 402 headers | @x402/express |
+| On-Chain Credit Score | 300–900 score computed from x402 payment history | Solidity, Foundry, The Graph |
+| ZK Credit Proofs | Prove score > threshold without revealing history | Noir (UltraPlonk), Barretenberg |
+| Tiered API Pricing | Gold/Silver/Unknown pricing in x402 402 headers | Node.js, Express, @x402/express |
 | Credit Line Paymaster | High-score agents defer payment via ERC-4337 | ZeroDev SDK |
 | ERC-8004 Integration | Score linked to portable AI agent identity NFTs | ERC-8004 Registry |
 | Privacy-Preserving | Full transaction history never leaves agent's wallet | Pedersen commitments |
+| Agent Dashboard | Score Lookup + ZK Proof Generator | Next.js, React, Tailwind, viem |
+| Blockchain Network | High-performance L2 execution environment | Base Sepolia |
 
 ## 🔄 How It Works
 
