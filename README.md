@@ -40,6 +40,14 @@ AgentCredit enables privacy-preserving, on-chain credit scores that unlock tiere
 | Privacy-Preserving | Full transaction history never leaves agent's wallet | Pedersen commitments |
 | Agent Dashboard | Score Lookup + ZK Proof Generator | Next.js, React, Tailwind, viem |
 | Blockchain Network | High-performance L2 execution environment | Base Sepolia |
+## 💻 Tech Stack
+
+- **Smart Contracts & Blockchain**: Solidity, Foundry (Forge, Cast), Base Sepolia (L2)
+- **Zero-Knowledge Proofs**: Noir, UltraPlonk, Barretenberg, `@noir-lang/noir_js`, `@noir-lang/backend_barretenberg`
+- **Backend API & Middleware**: Node.js, Express, TypeScript, `@x402/express`
+- **Frontend Dashboard**: Next.js 14 (App Router), React, Tailwind CSS, `viem`
+- **Indexing & Data**: The Graph, GraphQL, AssemblyScript
+- **Identity & Accounts**: ERC-8004 (Identity NFTs), ERC-4337 (Account Abstraction), ZeroDev SDK
 
 ## 🔄 How It Works
 
