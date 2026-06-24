@@ -138,29 +138,29 @@ AgentCredit consists of a modular framework allowing agents to fetch their score
 ```mermaid
 graph TB
     subgraph "Layer 5 — Frontend"
-        DASH[Next.js Dashboard<br/>Score Lookup + ZK Proof Generator]
+        DASH["Next.js Dashboard<br/>Score Lookup + ZK Proof Generator"]
     end
 
     subgraph "Layer 4 — ZK System"
-        CIRCUIT[Noir Circuit<br/>credit_proof.nr]
-        VERIFIER[Solidity Verifier<br/>ZKVerifier.sol]
-        CACHE[ProofCache<br/>12h validity window]
+        CIRCUIT["Noir Circuit<br/>credit_proof.nr"]
+        VERIFIER["Solidity Verifier<br/>ZKVerifier.sol"]
+        CACHE["ProofCache<br/>12h validity window"]
     end
 
     subgraph "Layer 3 — Smart Contracts"
-        REGISTRY[CreditRegistry.sol<br/>Score storage + commitment]
-        PAYMASTER[CreditLinePaymaster.sol<br/>ERC-4337 deferred payment]
+        REGISTRY["CreditRegistry.sol<br/>Score storage + commitment"]
+        PAYMASTER["CreditLinePaymaster.sol<br/>ERC-4337 deferred payment"]
     end
 
     subgraph "Layer 2 — Indexer"
-        GRAPH[The Graph Subgraph<br/>AuthorizationUsed events]
-        KEEPER[Keeper Bot<br/>recordPayment() caller]
+        GRAPH["The Graph Subgraph<br/>AuthorizationUsed events"]
+        KEEPER["Keeper Bot<br/>recordPayment() caller"]
     end
 
     subgraph "Layer 1 — x402 Payment Rail"
-        API[Express API<br/>@x402/express middleware]
-        GATE[creditGate.ts<br/>Tiered pricing logic]
-        HOOK[facilitatorHook.ts<br/>Post-payment recorder]
+        API["Express API<br/>@x402/express middleware"]
+        GATE["creditGate.ts<br/>Tiered pricing logic"]
+        HOOK["facilitatorHook.ts<br/>Post-payment recorder"]
     end
 
     DASH -->|reads score| REGISTRY
