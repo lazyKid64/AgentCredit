@@ -42,6 +42,29 @@ AgentCredit enables privacy-preserving, on-chain credit scores that unlock tiere
 | Blockchain Network | High-performance L2 execution environment | Base Sepolia |
 ## 💻 Tech Stack
 
+<div align="center">
+  <img src="https://img.shields.io/badge/Solidity-%23363636.svg?style=for-the-badge&logo=solidity&logoColor=white" alt="Solidity" />
+  <img src="https://img.shields.io/badge/Foundry-black?style=for-the-badge" alt="Foundry" />
+  <img src="https://img.shields.io/badge/Base_Sepolia-blue?style=for-the-badge" alt="Base Sepolia" />
+  <img src="https://img.shields.io/badge/Noir_ZK-black?style=for-the-badge" alt="Noir ZK" />
+  <br />
+  <img src="https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white" alt="Next JS" />
+  <img src="https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
+  <img src="https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <br />
+  <img src="https://img.shields.io/badge/Node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" alt="NodeJS" />
+  <img src="https://img.shields.io/badge/Express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB" alt="Express.js" />
+  <img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white" alt="GraphQL" />
+  <img src="https://img.shields.io/badge/The_Graph-0B0A1D?style=for-the-badge" alt="The Graph" />
+  <br />
+  <img src="https://img.shields.io/badge/ZeroDev-purple?style=for-the-badge" alt="ZeroDev" />
+  <img src="https://img.shields.io/badge/ERC--4337-orange?style=for-the-badge" alt="ERC-4337" />
+  <img src="https://img.shields.io/badge/ERC--8004-orange?style=for-the-badge" alt="ERC-8004" />
+</div>
+
+<br />
+
 - **Smart Contracts & Blockchain**: Solidity, Foundry (Forge, Cast), Base Sepolia (L2)
 - **Zero-Knowledge Proofs**: Noir, UltraPlonk, Barretenberg, `@noir-lang/noir_js`, `@noir-lang/backend_barretenberg`
 - **Backend API & Middleware**: Node.js, Express, TypeScript, `@x402/express`
