@@ -1,0 +1,12 @@
+{
+  "name": "@agentcredit/indexer",
+  "version": "0.0.1",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --studio agentcredit"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "^0.35.0"
+  }
+}

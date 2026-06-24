@@ -1,0 +1,27 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: CreditRegistry
+    network: base-sepolia
+    source:
+      address: "0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13"
+      abi: CreditRegistry
+      startBlock: 43235794
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AgentPayment
+        - AgentCreditScore
+      abis:
+        - name: CreditRegistry
+          file: ./abis/CreditRegistry.json
+      eventHandlers:
+        - event: PaymentRecorded(indexed address,uint256,bytes32)
+          handler: handlePaymentRecorded
+        - event: ScoreUpdated(indexed address,uint256)
+          handler: handleScoreUpdated
+      file: ./src/mapping.ts

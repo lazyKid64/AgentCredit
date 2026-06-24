@@ -1,0 +1,16 @@
+type AgentPayment @entity(immutable: true) {
+  id: ID!
+  agent: Bytes!
+  amount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+}
+
+type AgentCreditScore @entity(immutable: false) {
+  id: ID!
+  agent: Bytes!
+  totalPayments: BigInt!
+  totalVolume: BigInt!
+  computedScore: BigInt!
+  lastUpdated: BigInt!
+}
