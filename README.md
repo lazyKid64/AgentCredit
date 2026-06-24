@@ -57,6 +57,8 @@ AgentCredit enables privacy-preserving, on-chain credit scores that unlock tiere
   <img src="https://img.shields.io/badge/Express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB" alt="Express.js" />
   <img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white" alt="GraphQL" />
   <img src="https://img.shields.io/badge/The_Graph-0B0A1D?style=for-the-badge" alt="The Graph" />
+  <img src="https://img.shields.io/badge/Ruby-CC342D?style=for-the-badge&logo=ruby&logoColor=white" alt="Ruby" />
+  <img src="https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Shell" />
   <br />
   <img src="https://img.shields.io/badge/ZeroDev-purple?style=for-the-badge" alt="ZeroDev" />
   <img src="https://img.shields.io/badge/ERC--4337-orange?style=for-the-badge" alt="ERC-4337" />
@@ -71,6 +73,7 @@ AgentCredit enables privacy-preserving, on-chain credit scores that unlock tiere
 - **Frontend Dashboard**: Next.js 14 (App Router), React, Tailwind CSS, `viem`
 - **Indexing & Data**: The Graph, GraphQL, AssemblyScript
 - **Identity & Accounts**: ERC-8004 (Identity NFTs), ERC-4337 (Account Abstraction), ZeroDev SDK
+- **Scripting & Tooling**: Shell Script, Ruby
 
 ## 🔄 How It Works
 
