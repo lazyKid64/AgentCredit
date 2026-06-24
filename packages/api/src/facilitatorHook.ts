@@ -16,7 +16,7 @@ export async function recordPayment(
   amount: bigint,
   nonce: string
 ): Promise<void> {
-  const privateKey = process.env.PRIVATE_KEY as Hex;
+  const privateKey = process.env.X402_FACILITATOR_PRIVATE_KEY as Hex;
   if (!privateKey) {
     throw new Error('PRIVATE_KEY not set in environment');
   }

@@ -1,101 +1,151 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import ScoreCard from '../components/ScoreCard';
+
+interface BreakdownItem {
+  label: string;
+  value: number;
+  max: number;
+}
+
+interface ScoreResponse {
+  address: string;
+  score: number;
+  tier: 'gold' | 'silver' | 'unknown';
+  breakdown: BreakdownItem[];
+  error?: string;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [address, setAddress] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<ScoreResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const fetchScore = async (addrToFetch: string) => {
+    if (!addrToFetch || !addrToFetch.startsWith('0x')) {
+      setError('Please enter a valid Ethereum address starting with 0x');
+      return;
+    }
+    
+    setLoading(true);
+    setError(null);
+    setData(null);
+    setAddress(addrToFetch); // Update input field if clicked from examples
+    
+    try {
+      const res = await fetch(`/api/score?address=${addrToFetch}`);
+      const result = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(result.error || 'Failed to fetch score');
+      }
+      
+      setData(result);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred while fetching the score');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleExampleClick = (addr: string) => {
+    fetchScore(addr);
+  };
+
+  return (
+    <main className="max-w-4xl mx-auto py-12 px-6">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-indigo-500 text-transparent bg-clip-text">
+          AgentCredit Protocol
+        </h1>
+        <p className="text-xl text-gray-400">On-chain credit bureau for AI agents</p>
+      </div>
+
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 shadow-xl max-w-2xl mx-auto mb-12">
+        <form 
+          onSubmit={(e) => { e.preventDefault(); fetchScore(address); }}
+          className="flex flex-col sm:flex-row gap-4"
+        >
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="0x... agent address"
+            className="flex-grow bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-mono"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {loading ? 'Checking...' : 'Check Score'}
+          </button>
+        </form>
+
+        <div className="mt-8">
+          <p className="text-sm text-gray-500 mb-3 uppercase tracking-wider font-semibold">Quick Examples</p>
+          <div className="flex flex-wrap gap-3">
+            <button 
+              onClick={() => handleExampleClick('0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa')}
+              className="bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg px-4 py-2 text-sm text-gray-300 transition-colors font-mono"
+            >
+              Agent A (~520)
+            </button>
+            <button 
+              onClick={() => handleExampleClick('0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB')}
+              className="bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg px-4 py-2 text-sm text-gray-300 transition-colors font-mono"
+            >
+              Agent B (~680)
+            </button>
+            <button 
+              onClick={() => handleExampleClick('0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC')}
+              className="bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg px-4 py-2 text-sm text-gray-300 transition-colors font-mono"
+            >
+              Agent C (~820)
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+
+      {error && (
+        <div className="bg-red-900/50 border border-red-800 text-red-200 px-6 py-4 rounded-lg mb-8 max-w-2xl mx-auto">
+          {error}
+        </div>
+      )}
+
+      {data && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <ScoreCard score={data.score} tier={data.tier} address={data.address} />
+          
+          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl">
+            <h3 className="text-lg font-semibold text-gray-200 mb-6 border-b border-gray-800 pb-2">Score Breakdown</h3>
+            <div className="space-y-5">
+              {data.breakdown.map((item, i) => {
+                const percent = Math.min(100, Math.max(0, (item.value / item.max) * 100));
+                return (
+                  <div key={i}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-400">{item.label}</span>
+                      <span className="text-gray-200 font-medium">+{item.value} <span className="text-gray-600">/ {item.max}</span></span>
+                    </div>
+                    <div className="w-full bg-gray-800 rounded-full h-2">
+                      <div
+                        className="bg-blue-500 h-2 rounded-full transition-all duration-1000 ease-out"
+                        style={{ width: `${percent}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-6 pt-4 border-t border-gray-800 text-xs text-gray-500 text-center">
+              Base score is 300. Max score is 900.
+            </div>
+          </div>
+        </div>
+      )}
+    </main>
   );
 }

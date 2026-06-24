@@ -5,9 +5,12 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node -r dotenv/config src/index.ts",
-    "start": "ts-node -r dotenv/config src/index.ts"
+    "start": "ts-node -r dotenv/config src/index.ts",
+    "simulate": "ts-node -r dotenv/config src/simulateAgent.ts"
   },
   "dependencies": {
+    "@noir-lang/backend_barretenberg": "^0.36.0",
+    "@noir-lang/noir_js": "^1.0.0-beta.22",
     "@x402/core": "^2.16.0",
     "@x402/evm": "^2.16.0",
     "@x402/express": "^2.16.0",
