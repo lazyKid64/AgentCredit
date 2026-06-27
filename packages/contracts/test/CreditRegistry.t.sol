@@ -2,17 +2,44 @@
 pragma solidity ^0.8.24;
 
 import "forge-std/Test.sol";
-import "../src/CreditRegistry.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {CreditRegistry} from "../src/CreditRegistry.sol";
+import {CreditRegistryV2} from "../src/CreditRegistryV2.sol";
 
 contract CreditRegistryTest is Test {
     CreditRegistry public registry;
-    address public facilitator = address(0x1);
-    address public agent = address(0x2);
+    address public deployer;
+    address public facilitator;
+    address public guardian;
+    address public agent;
 
     function setUp() public {
-        registry = new CreditRegistry();
-        registry.setFacilitator(facilitator, true);
+        deployer = makeAddr("deployer");
+        facilitator = makeAddr("facilitator");
+        guardian = makeAddr("guardian");
+        agent = makeAddr("agent");
+
+        vm.startPrank(deployer);
+
+        // Deploy implementation
+        CreditRegistry impl = new CreditRegistry();
+
+        // Deploy proxy pointing to implementation
+        ERC1967Proxy proxy = new ERC1967Proxy(
+            address(impl),
+            abi.encodeCall(CreditRegistry.initialize, (deployer))
+        );
+        registry = CreditRegistry(address(proxy));
+
+        // Grant roles
+        registry.grantRole(registry.FACILITATOR_ROLE(), facilitator);
+        registry.grantRole(registry.GUARDIAN_ROLE(), guardian);
+        vm.stopPrank();
     }
+
+    // ──────────────────────────────────────────────
+    // Original 6 tests (adapted for proxy pattern)
+    // ──────────────────────────────────────────────
 
     /// @notice recordPayment should increment totalPayments by 1
     function test_recordPayment_incrementsTotalPayments() public {
@@ -40,7 +67,7 @@ contract CreditRegistryTest is Test {
         address notFacilitator = address(0x99);
 
         vm.prank(notFacilitator);
-        vm.expectRevert("not a facilitator");
+        vm.expectRevert();
         registry.recordPayment(agent, 1_000_000, bytes32(uint256(1)));
     }
 
@@ -94,7 +121,87 @@ contract CreditRegistryTest is Test {
         // Non-facilitator should be rejected
         address notFacilitator = address(0x99);
         vm.prank(notFacilitator);
-        vm.expectRevert("not a facilitator");
+        vm.expectRevert();
         registry.setCommitment(agent, bytes32(uint256(0x1234)));
+    }
+
+    // ──────────────────────────────────────────────
+    // New production tests (8 additional)
+    // ──────────────────────────────────────────────
+
+    /// @notice version() should return "2.0.0"
+    function test_version_returns_2_0_0() public view {
+        assertEq(registry.version(), "2.0.0");
+    }
+
+    /// @notice Guardian should be able to pause the protocol
+    function test_guardian_can_pause() public {
+        vm.prank(guardian);
+        registry.emergencyPause();
+        assertTrue(registry.paused());
+    }
+
+    /// @notice recordPayment should revert when the protocol is paused
+    function test_recordPayment_reverts_when_paused() public {
+        vm.prank(guardian);
+        registry.emergencyPause();
+
+        vm.prank(facilitator);
+        vm.expectRevert();
+        registry.recordPayment(agent, 1_000_000, bytes32(uint256(1)));
+    }
+
+    /// @notice Non-guardian address should not be able to pause
+    function test_non_guardian_cannot_pause() public {
+        address randomUser = makeAddr("randomUser");
+        vm.prank(randomUser);
+        vm.expectRevert();
+        registry.emergencyPause();
+    }
+
+    /// @notice SCORE_ADMIN_ROLE can update score weights when they sum to 10000
+    function test_score_weights_update() public {
+        uint256[4] memory weights = [uint256(2500), 2500, 2500, 2500];
+
+        vm.prank(deployer);
+        registry.updateScoreWeights(weights);
+
+        assertEq(registry.scoreWeights(0), 2500);
+        assertEq(registry.scoreWeights(1), 2500);
+        assertEq(registry.scoreWeights(2), 2500);
+        assertEq(registry.scoreWeights(3), 2500);
+    }
+
+    /// @notice Score weights must sum to exactly 10000 basis points
+    function test_score_weights_must_sum_to_10000() public {
+        uint256[4] memory badWeights = [uint256(2000), 2000, 2000, 3000];
+
+        vm.prank(deployer);
+        vm.expectRevert("weights must sum to 10000 basis points");
+        registry.updateScoreWeights(badWeights);
+    }
+
+    /// @notice UUPS upgrade to CreditRegistryV2 should succeed for admin
+    function test_upgrade_safety() public {
+        // Deploy new implementation
+        vm.startPrank(deployer);
+        CreditRegistryV2 implV2 = new CreditRegistryV2();
+
+        // Upgrade via UUPS — admin calls upgradeToAndCall
+        registry.upgradeToAndCall(address(implV2), "");
+        vm.stopPrank();
+
+        // Verify the upgrade succeeded by checking the new version
+        assertEq(registry.version(), "3.0.0");
+    }
+
+    /// @notice Non-admin should not be able to upgrade the proxy
+    function test_unauthorized_upgrade_fails() public {
+        CreditRegistryV2 implV2 = new CreditRegistryV2();
+
+        address randomUser = makeAddr("randomUser");
+        vm.prank(randomUser);
+        vm.expectRevert();
+        registry.upgradeToAndCall(address(implV2), "");
     }
 }
