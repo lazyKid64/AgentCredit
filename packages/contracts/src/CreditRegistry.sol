@@ -6,6 +6,7 @@ import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/U
 import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import {PoseidonT3} from "poseidon-solidity/PoseidonT3.sol";
 import "./interfaces/ICreditRegistry.sol";
 
 /// @title CreditRegistry
@@ -217,11 +218,15 @@ contract CreditRegistry is
         uint256 adjustedBonus = disputePenalty >= bonus ? 0 : bonus - disputePenalty;
         s.computedScore = _min(300 + adjustedBonus, 900);
 
-        // scoreCommitment = keccak256(abi.encodePacked(computedScore, agent))
-        // NOTE: In production this would be a Pedersen hash. For hackathon, keccak256 is acceptable.
-        s.scoreCommitment = bytes32(
-            uint256(keccak256(abi.encodePacked(s.computedScore, agent)))
-        );
+        // Compute Poseidon commitment in separate function to avoid stack-too-deep
+        s.scoreCommitment = _computeCommitment(s.computedScore, agent);
+    }
+
+    /// @dev Computes the Poseidon BN254 commitment: PoseidonT3.hash([score, agentAddress]).
+    ///      Separated from _recomputeScore to avoid stack-too-deep with PoseidonT3's assembly.
+    ///      This MUST match Noir's std::hash::poseidon::bn254::hash_2([score, agent_address]).
+    function _computeCommitment(uint256 score, address agent) private pure returns (bytes32) {
+        return bytes32(PoseidonT3.hash([score, uint256(uint160(agent))]));
     }
 
     /// @dev Floor of log2(x). Returns 0 for x <= 1.

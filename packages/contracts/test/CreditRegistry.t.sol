@@ -5,6 +5,7 @@ import "forge-std/Test.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {CreditRegistry} from "../src/CreditRegistry.sol";
 import {CreditRegistryV2} from "../src/CreditRegistryV2.sol";
+import {PoseidonT3} from "poseidon-solidity/PoseidonT3.sol";
 
 contract CreditRegistryTest is Test {
     CreditRegistry public registry;
@@ -203,5 +204,32 @@ contract CreditRegistryTest is Test {
         vm.prank(randomUser);
         vm.expectRevert();
         registry.upgradeToAndCall(address(implV2), "");
+    }
+
+    /// @notice Commitment must use Poseidon hash, NOT keccak256
+    function test_commitment_uses_poseidon() public {
+        // Record a payment to trigger score computation
+        vm.prank(facilitator);
+        registry.recordPayment(agent, 1_000_000, bytes32(uint256(1)));
+
+        // Get the on-chain commitment
+        bytes32 commitment = registry.getCommitment(agent);
+
+        // Get the score
+        uint256 score = registry.getScore(agent);
+
+        // Compute expected Poseidon commitment
+        bytes32 expectedCommitment = bytes32(
+            PoseidonT3.hash([score, uint256(uint160(agent))])
+        );
+
+        // They must match — proving Poseidon is used, not keccak256
+        assertEq(commitment, expectedCommitment, "commitment must use PoseidonT3 hash");
+
+        // Also verify it's NOT keccak256
+        bytes32 keccakCommitment = bytes32(
+            uint256(keccak256(abi.encodePacked(score, agent)))
+        );
+        assertNotEq(commitment, keccakCommitment, "commitment must NOT be keccak256");
     }
 }
