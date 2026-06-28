@@ -4,8 +4,10 @@ dotenv.config({ path: '../../.env' });
 import express, { Request, Response, NextFunction } from 'express';
 import { createPublicClient, http, parseAbi, type Hex, keccak256, encodePacked } from 'viem';
 import { baseSepolia } from 'viem/chains';
-import { creditGate, TIER_PRICES, type CreditRequest, type CreditTier } from './creditGate';
-import { recordPayment } from './facilitatorHook';
+import { creditGate, TIER_PRICES, type CreditRequest, type CreditTier } from './creditGate.js';
+import { recordPayment } from './facilitatorHook.js';
+import { startPaymentWorker } from './queue/paymentWorker.js';
+import { logger } from './logger.js';
 
 const CREDIT_REGISTRY_ABI = parseAbi([
   'function getScore(address agent) external view returns (uint256)',
@@ -50,7 +52,7 @@ app.get('/api/score/:address', async (req: Request, res: Response) => {
     });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    console.error('[score] Error:', message);
+    logger.error({ error: message }, '[score] Error');
     res.status(500).json({ error: message });
   }
 });
@@ -125,10 +127,11 @@ function x402Middleware(req: Request, res: Response, next: NextFunction): void {
 
     // Attach payment info to request for downstream handlers
     (req as unknown as Record<string, unknown>).x402Payment = payload;
-    console.log(`[x402] Payment accepted from ${payload.from} for $${(Number(payload.amount) / 1e6).toFixed(4)}`);
+    logger.info({ agent: payload.from, amount: `$${(Number(payload.amount) / 1e6).toFixed(4)}` },
+      '[x402] Payment accepted');
     next();
   } catch (err) {
-    console.error('[x402] Failed to parse payment header:', err);
+    logger.error({ error: err }, '[x402] Failed to parse payment header');
     res.status(400).json({ error: 'Malformed X-PAYMENT header' });
   }
 }
@@ -146,7 +149,7 @@ app.get(
     // If this request has a credit proof and is NOT gold tier, return 402 with discounted price
     const creditProofHeader = req.headers['x-credit-proof'] as string | undefined;
     if (creditProofHeader && tier !== 'gold') {
-      const discountedPrice = Number(price);
+      const discountedPrice = Number(price.priceUSDC);
       const requirements = buildPaymentRequirements(discountedPrice);
       const encoded = Buffer.from(JSON.stringify({ accepts: [requirements] })).toString('base64');
       res.setHeader('X-Payment-Requirements', encoded);
@@ -158,20 +161,20 @@ app.get(
       return;
     }
 
-    // Record payment on-chain if we have payment data
+    // Record payment on-chain asynchronously via BullMQ queue
     const payment = (req as unknown as Record<string, unknown>).x402Payment as PaymentPayload | undefined;
     if (payment) {
       const nonce = keccak256(encodePacked(['string'], [payment.nonce]));
       recordPayment(payment.from, BigInt(payment.amount), nonce).catch((err: Error) => {
-        console.error('[route] recordPayment failed:', err.message);
+        logger.error({ error: err.message }, '[route] recordPayment enqueue failed');
       });
     }
 
     res.json({
       data: 'premium market data secured by x402',
       tier,
-      price: `$${(Number(price) / 1e6).toFixed(4)}`,
-      priceMicro: price,
+      price: `$${(Number(price.priceUSDC) / 1e6).toFixed(4)}`,
+      priceMicro: price.priceUSDC,
       timestamp: Date.now(),
     });
   }
@@ -183,14 +186,29 @@ app.get('/api/health', (_req: Request, res: Response) => {
     status: 'ok',
     registry: registryAddress,
     network: 'base-sepolia',
-    tiers: TIER_PRICES,
+    tiers: Object.fromEntries(
+      Object.entries(TIER_PRICES).map(([k, v]) => [k, v.priceUSDC])
+    ),
+    queue: 'bullmq (redis-backed)',
   });
 });
 
-// ---------- Start Server ----------
+// ---------- Start Worker + Server ----------
+// Start the payment worker in the same process for simplicity
+// In production, run paymentWorker.ts as a separate process
+try {
+  const worker = startPaymentWorker();
+  logger.info('Payment worker initialized alongside API server');
+} catch (workerErr) {
+  logger.warn({ error: workerErr }, 'Payment worker failed to start (Redis may not be available). API will still serve requests.');
+}
+
 const PORT = parseInt(process.env.PORT || '3000', 10);
 app.listen(PORT, () => {
-  console.log(`[AgentCredit API] Running on http://localhost:${PORT}`);
-  console.log(`[AgentCredit API] CreditRegistry: ${registryAddress}`);
-  console.log(`[AgentCredit API] Tier pricing: Gold=$${TIER_PRICES.gold} Silver=$${TIER_PRICES.silver} Unknown=$${TIER_PRICES.unknown}`);
+  logger.info({ port: PORT, registry: registryAddress }, '[AgentCredit API] Server started');
+  logger.info({
+    gold: TIER_PRICES.gold.label,
+    silver: TIER_PRICES.silver.label,
+    unknown: TIER_PRICES.unknown.label,
+  }, '[AgentCredit API] Tier pricing');
 });

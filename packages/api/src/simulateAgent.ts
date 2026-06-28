@@ -34,7 +34,7 @@ function logSeparator(): void {
 async function runDemo(): Promise<void> {
   console.log('\n\x1b[1m\x1b[35m╔══════════════════════════════════════════════╗\x1b[0m');
   console.log('\x1b[1m\x1b[35m║   AgentCredit — Full Protocol Demo            ║\x1b[0m');
-  console.log('\x1b[1m\x1b[35m║   (Poseidon Hash + ProofCache Edition)        ║\x1b[0m');
+  console.log('\x1b[1m\x1b[35m║   (Async Queue + Poseidon + ProofCache)       ║\x1b[0m');
   console.log('\x1b[1m\x1b[35m╚══════════════════════════════════════════════╝\x1b[0m\n');
 
   const API_BASE = 'http://localhost:3000';
@@ -117,19 +117,42 @@ async function runDemo(): Promise<void> {
   logSuccess(`Got 200 — data: "${data2.data}"`);
   logSuccess(`Tier: ${data2.tier}  |  Price: ${data2.price}`);
 
-  // ─── Step 5: Wait for on-chain score update ───
+  // ─── Step 5: Wait for async worker to update score ───
   logSeparator();
-  log('5', 'Waiting 5s for on-chain score update...');
-  await new Promise((r) => setTimeout(r, 5000));
+  log('5', 'Payment queued for async processing. Waiting for worker...');
+  logSuccess('BullMQ job enqueued → worker processes with retries + nonce management');
 
-  const newScoreRaw = await publicClient.readContract({
-    address: registryAddress,
-    abi: registryAbi,
-    functionName: 'getScore',
-    args: [account.address],
-  });
-  const newScore = Number(newScoreRaw);
-  logSuccess(`Updated score: ${newScore}  (was ${score})`);
+  // Poll getScore() every 2s, max 30s, until score changes
+  const pollStart = Date.now();
+  let newScore = score;
+  let pollCount = 0;
+  const MAX_POLL_MS = 30000;
+  const POLL_INTERVAL_MS = 2000;
+
+  while (Date.now() - pollStart < MAX_POLL_MS) {
+    await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+    pollCount++;
+
+    const updatedScoreRaw = await publicClient.readContract({
+      address: registryAddress,
+      abi: registryAbi,
+      functionName: 'getScore',
+      args: [account.address],
+    });
+    newScore = Number(updatedScoreRaw);
+
+    if (newScore !== score) {
+      const elapsed = ((Date.now() - pollStart) / 1000).toFixed(1);
+      logSuccess(`Score updated: ${score} → ${newScore} (took ${elapsed}s via async worker)`);
+      break;
+    }
+
+    console.log(`\x1b[90m  ... polling (${pollCount}) score=${newScore}\x1b[0m`);
+  }
+
+  if (newScore === score) {
+    logSuccess(`Score unchanged after polling (score=${newScore}). Worker may still be processing.`);
+  }
 
   // ─── Step 6: Read Poseidon commitment from CreditRegistry ───
   logSeparator();
@@ -283,6 +306,7 @@ async function runDemo(): Promise<void> {
   console.log(`\x1b[1m\x1b[32m║   Agent:          ${account.address.slice(0, 10)}...${account.address.slice(-8)}      ║\x1b[0m`);
   console.log(`\x1b[1m\x1b[32m║   Credit Score:   ${String(newScore).padEnd(28)}║\x1b[0m`);
   console.log(`\x1b[1m\x1b[32m║   Hash Function:  ${'Poseidon (BN254)'.padEnd(28)}║\x1b[0m`);
+  console.log(`\x1b[1m\x1b[32m║   Queue:          ${'BullMQ (Redis-backed)'.padEnd(28)}║\x1b[0m`);
   console.log(`\x1b[1m\x1b[32m║   Standard Price: $${(standardPrice / 1e6).toFixed(4).padEnd(27)}║\x1b[0m`);
   console.log(`\x1b[1m\x1b[32m║   Silver Price:   $${(discountedPrice / 1e6).toFixed(4).padEnd(27)}║\x1b[0m`);
   console.log(`\x1b[1m\x1b[32m║   Discount:       ${reduction}%${' '.repeat(27 - String(reduction).length - 1)}║\x1b[0m`);

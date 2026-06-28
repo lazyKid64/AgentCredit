@@ -1,60 +1,22 @@
-import {
-  createWalletClient,
-  http,
-  parseAbi,
-  type Hex,
-} from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
-import { baseSepolia } from 'viem/chains';
+import { enqueuePayment } from './queue/paymentQueue.js';
+import { logger } from './logger.js';
 
-const CREDIT_REGISTRY_ABI = parseAbi([
-  'function recordPayment(address agent, uint256 amount, bytes32 nonce) external',
-]);
-
-export async function recordPayment(
+// This is now fire-and-forget: enqueue the job and return immediately
+// The worker processes it asynchronously with retries
+export const recordPayment = async (
   agent: string,
   amount: bigint,
-  nonce: string
-): Promise<void> {
-  const privateKey = process.env.X402_FACILITATOR_PRIVATE_KEY as Hex;
-  if (!privateKey) {
-    throw new Error('PRIVATE_KEY not set in environment');
-  }
-
-  const registryAddress = process.env.CREDIT_REGISTRY_ADDRESS as Hex;
-  if (!registryAddress) {
-    throw new Error('CREDIT_REGISTRY_ADDRESS not set in environment');
-  }
-
-  const account = privateKeyToAccount(privateKey);
-  const walletClient = createWalletClient({
-    account,
-    chain: baseSepolia,
-    transport: http(process.env.RPC_URL),
-  });
-
-  const txHash = await walletClient.writeContract({
-    address: registryAddress,
-    abi: CREDIT_REGISTRY_ABI,
-    functionName: 'recordPayment',
-    args: [agent as Hex, amount, nonce as Hex],
-  });
-
-  console.log('[facilitator] Tx submitted:', txHash);
-
-  const { createPublicClient } = await import('viem');
-  const publicClient = createPublicClient({
-    chain: baseSepolia,
-    transport: http(process.env.RPC_URL),
-  });
-
-  const receipt = await publicClient.waitForTransactionReceipt({ hash: txHash });
-  console.log(
-    '[facilitator] Payment recorded. Agent:',
+  nonce: string,
+  txHash: string = ''
+): Promise<void> => {
+  const jobId = await enqueuePayment({
     agent,
-    'Amount:',
-    amount.toString(),
-    'Block:',
-    receipt.blockNumber.toString()
-  );
-}
+    amount: amount.toString(),
+    nonce,
+    txHash,
+    timestamp: Date.now(),
+    attempts: 0,
+  });
+  logger.info({ agent, jobId }, 'Payment enqueued for async processing');
+  // Returns immediately — API response is not delayed
+};
