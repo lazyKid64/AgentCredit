@@ -1,0 +1,113 @@
+name: AgentCredit Protocol CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  contracts:
+    name: Smart Contract Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install OZ Upgrades CLI (required for upgrade safety checks)
+        run: npm install -g @openzeppelin/upgrades-core
+
+      - name: Install contract dependencies
+        run: cd packages/contracts && forge install
+
+      - name: Build contracts
+        run: cd packages/contracts && forge build --sizes
+        # Fails if any contract exceeds 24,576 byte limit
+
+      - name: Run unit tests
+        run: cd packages/contracts && forge test -v --profile default
+
+      - name: Run invariant tests
+        run: cd packages/contracts && forge test --match-contract Invariant -v --profile ci
+
+      - name: Coverage check
+        run: |
+          cd packages/contracts
+          forge coverage --ir-minimum --report summary --no-match-contract Invariant 2>&1 | tee coverage-summary.txt
+          # Extract CreditRegistry branch coverage
+          REGISTRY_COV=$(grep "CreditRegistry.sol" coverage-summary.txt | head -1 | awk -F'|' '{print $5}' | grep -oP '[\d.]+' | head -1)
+          echo "CreditRegistry branch coverage: ${REGISTRY_COV}%"
+          # Fail if branch coverage below 20% (increase as tests improve)
+          python3 -c "
+          cov = float('${REGISTRY_COV}')
+          assert cov >= 20, f'CreditRegistry branch coverage {cov}% is below 20% minimum'
+          print(f'Coverage check passed: {cov}%')
+          "
+
+      - name: Slither static analysis
+        run: |
+          pip install slither-analyzer
+          cd packages/contracts
+          slither src/ --config-file .slither.config.json --json slither-report.json || true
+          # Parse for HIGH/CRITICAL findings and fail if any exist
+          python3 -c "
+          import json, sys
+          with open('slither-report.json') as f:
+            report = json.load(f)
+          high_crit = [
+            d for d in report.get('results', {}).get('detectors', [])
+            if d.get('impact') in ['High', 'Critical']
+          ]
+          if high_crit:
+            for d in high_crit:
+              print(f'[{d[\"impact\"]}] {d[\"check\"]}: {d[\"description\"][:100]}')
+            sys.exit(1)
+          print(f'Slither: 0 High/Critical findings')
+          "
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: packages/contracts/coverage-summary.txt
+
+      - name: Upload Slither report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: slither-report
+          path: packages/contracts/slither-report.json
+
+  typescript:
+    name: TypeScript Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: TypeScript type check (API)
+        run: cd packages/api && npx tsc --noEmit
+
+      - name: TypeScript type check (Dashboard)
+        run: cd packages/dashboard && npx tsc --noEmit
+
+      - name: Next.js build check
+        run: cd packages/dashboard && npm run build

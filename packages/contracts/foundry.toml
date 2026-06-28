@@ -12,4 +12,23 @@ ast = true
 build_info = true
 extra_output = ["storageLayout"]
 
+[profile.default.invariant]
+runs = 1000              # runs per invariant function (increase to 5000 before audit)
+depth = 50               # max call depth per run
+
+[profile.default.fuzz]
+runs = 500               # runs for standard fuzz tests
+
+[profile.ci.invariant]
+runs = 500               # faster for CI
+
+[profile.ci.fuzz]
+runs = 200
+
+[profile.deep.invariant]
+runs = 10000             # use before audit submission
+
+[profile.deep.fuzz]
+runs = 2000
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

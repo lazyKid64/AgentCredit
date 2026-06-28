@@ -1,0 +1,16 @@
+{
+  "filter_paths": "lib/",
+  "exclude_dependencies": true,
+  "solc_remaps": [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/",
+    "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+    "poseidon-solidity/=lib/poseidon-solidity/src/"
+  ],
+  "detectors_to_exclude": [
+    "assembly",
+    "low-level-calls"
+  ],
+  "exclude_informational": false,
+  "exclude_optimization": true,
+  "json": "slither-report.json"
+}
