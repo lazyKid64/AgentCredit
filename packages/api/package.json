@@ -6,7 +6,9 @@
     "build": "tsc",
     "dev": "ts-node -r dotenv/config src/index.ts",
     "start": "ts-node -r dotenv/config src/index.ts",
-    "simulate": "ts-node -r dotenv/config src/simulateAgent.ts"
+    "simulate": "ts-node -r dotenv/config src/simulateAgent.ts",
+    "validate-env": "ts-node -r dotenv/config src/validateEnv.ts",
+    "start:safe": "npm run validate-env && npm start"
   },
   "dependencies": {
     "@noir-lang/backend_barretenberg": "^0.36.0",
