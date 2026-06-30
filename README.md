@@ -221,76 +221,84 @@ tying up capital in agent wallets that could be deployed more efficiently.
 6. **Payment Authorization**: Agent receives tiered discount and authorizes payment.
 7. **Score Update**: Facilitator anchors the payment on-chain, boosting the score.
 
-<div align="center">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 900" width="700" height="900">
-  <defs>
-    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#333"/></marker>
-  </defs>
-  <rect width="700" height="900" fill="#ffffff"/>
-  <!-- Node 1: Diamond -->
-  <polygon points="350,15 500,55 350,95 200,55" fill="#b8f5b8" stroke="#333" stroke-width="2.5"/>
-  <text x="350" y="50" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">Agent requests</text>
-  <text x="350" y="67" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">/api/premium-data</text>
-  <!-- Arrow 1→2 -->
-  <line x1="350" y1="95" x2="350" y2="125" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <text x="420" y="115" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#666" font-style="italic">no proof header</text>
-  <!-- Node 2: Pink rect -->
-  <rect x="200" y="125" width="300" height="65" rx="18" ry="18" fill="#ffb3b3" stroke="#333" stroke-width="2.5"/>
-  <text x="350" y="150" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">402 Payment Required returned</text>
-  <text x="350" y="170" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#555">Standard price: $0.001</text>
-  <!-- Arrow 2→3 -->
-  <line x1="350" y1="190" x2="350" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <!-- Node 3: Yellow rect -->
-  <rect x="175" y="220" width="350" height="65" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5"/>
-  <text x="350" y="245" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">Agent signs EIP-3009</text>
-  <text x="350" y="265" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#555">TransferWithAuthorization (USDC, no gas)</text>
-  <!-- Arrow 3→4 -->
-  <line x1="350" y1="285" x2="350" y2="315" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <!-- Node 4: Green rect -->
-  <rect x="175" y="315" width="300" height="65" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5"/>
-  <text x="325" y="340" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">Payment confirmed on-chain</text>
-  <text x="325" y="360" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#555">Facilitator queues recordPayment()</text>
-  <!-- Side ellipse: BullMQ -->
-  <line x1="475" y1="347" x2="540" y2="347" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <ellipse cx="615" cy="347" rx="70" ry="32" fill="#b3d9ff" stroke="#333" stroke-width="2"/>
-  <text x="615" y="342" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#333">BullMQ worker</text>
-  <text x="615" y="358" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#333">updates score async</text>
-  <!-- Arrow 4→5 -->
-  <line x1="350" y1="380" x2="350" y2="420" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <!-- Node 5: Black rect -->
-  <rect x="175" y="420" width="300" height="70" rx="18" ry="18" fill="#1a1a1a" stroke="#333" stroke-width="2.5"/>
-  <text x="325" y="448" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#ffffff">Agent generates ZK proof</text>
-  <text x="325" y="468" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#cccccc">Noir circuit (~8s) — proves score &gt; 600</text>
-  <!-- Side ellipse: ProofCache -->
-  <line x1="475" y1="455" x2="540" y2="455" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <ellipse cx="615" cy="455" rx="70" ry="32" fill="#b3d9ff" stroke="#333" stroke-width="2"/>
-  <text x="615" y="450" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#333">Proof cached in</text>
-  <text x="615" y="466" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#333">ProofCache (12h)</text>
-  <!-- Arrow 5→6 -->
-  <line x1="350" y1="490" x2="350" y2="540" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <!-- Node 6: Diamond -->
-  <polygon points="350,540 520,585 350,630 180,585" fill="#b8f5b8" stroke="#333" stroke-width="2.5"/>
-  <text x="350" y="578" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#333">Retry request with</text>
-  <text x="350" y="596" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#333">X-CREDIT-PROOF header</text>
-  <!-- Branch left: Gold -->
-  <line x1="180" y1="585" x2="60" y2="585" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <text x="120" y="575" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#666" font-style="italic">score ≥ 750</text>
-  <text x="55" y="610" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#b8860b" font-weight="bold">🥇 Gold</text>
-  <text x="55" y="628" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#555">$0.0005</text>
-  <!-- Branch right: Silver -->
-  <line x1="520" y1="585" x2="640" y2="585" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <text x="580" y="575" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#666" font-style="italic">score ≥ 600</text>
-  <text x="655" y="610" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#708090" font-weight="bold">🥈 Silver</text>
-  <text x="655" y="628" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#555">$0.0008</text>
-  <!-- Arrow 6→7 -->
-  <line x1="350" y1="630" x2="350" y2="680" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
-  <text x="385" y="660" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#666" font-style="italic">no proof</text>
-  <!-- Node 7: Green rect -->
-  <rect x="200" y="680" width="300" height="60" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5"/>
-  <text x="350" y="705" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">200 OK — Premium data returned</text>
-  <text x="350" y="725" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="12" fill="#555">Tier discount applied</text>
-</svg>
-</div>
+```mermaid
+sequenceDiagram
+#mermaid-rni-r1 { font-family: "Anthropic Sans", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; fill: rgb(229, 229, 229); }
+#mermaid-rni-r1 .edge-animation-slow { stroke-dashoffset: 900; animation: 50s linear 0s infinite normal none running dash; stroke-linecap: round; stroke-dasharray: 9, 5 !important; }
+#mermaid-rni-r1 .edge-animation-fast { stroke-dashoffset: 900; animation: 20s linear 0s infinite normal none running dash; stroke-linecap: round; stroke-dasharray: 9, 5 !important; }
+#mermaid-rni-r1 .error-icon { fill: rgb(204, 120, 92); }
+#mermaid-rni-r1 .error-text { fill: rgb(51, 135, 163); stroke: rgb(51, 135, 163); }
+#mermaid-rni-r1 .edge-thickness-normal { stroke-width: 1px; }
+#mermaid-rni-r1 .edge-thickness-thick { stroke-width: 3.5px; }
+#mermaid-rni-r1 .edge-pattern-solid { stroke-dasharray: 0; }
+#mermaid-rni-r1 .edge-thickness-invisible { stroke-width: 0; fill: none; }
+#mermaid-rni-r1 .edge-pattern-dashed { stroke-dasharray: 3; }
+#mermaid-rni-r1 .edge-pattern-dotted { stroke-dasharray: 2; }
+#mermaid-rni-r1 .marker { fill: rgb(161, 161, 161); stroke: rgb(161, 161, 161); }
+#mermaid-rni-r1 .marker.cross { stroke: rgb(161, 161, 161); }
+#mermaid-rni-r1 svg { font-family: "Anthropic Sans", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; }
+#mermaid-rni-r1 p { margin: 0px; }
+#mermaid-rni-r1 .actor { stroke: rgb(161, 161, 161); fill: transparent; stroke-width: 1; }
+#mermaid-rni-r1 rect.actor.outer-path[data-look="neo"] { filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
+#mermaid-rni-r1 rect.note[data-look="neo"] { stroke: rgb(161, 161, 161); fill: rgb(45, 45, 45); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
+#mermaid-rni-r1 text.actor > tspan { fill: rgb(229, 229, 229); stroke: none; }
+#mermaid-rni-r1 .actor-line { stroke: rgb(161, 161, 161); }
+#mermaid-rni-r1 .innerArc { stroke-width: 1.5; stroke-dasharray: none; }
+#mermaid-rni-r1 .messageLine0 { stroke-width: 1.5; stroke-dasharray: none; stroke: rgb(229, 229, 229); }
+#mermaid-rni-r1 .messageLine1 { stroke-width: 1.5; stroke-dasharray: 2, 2; stroke: rgb(229, 229, 229); }
+#mermaid-rni-r1 [id$="-arrowhead"] path { fill: rgb(229, 229, 229); stroke: rgb(229, 229, 229); }
+#mermaid-rni-r1 .sequenceNumber { fill: rgb(94, 94, 94); }
+#mermaid-rni-r1 [id$="-sequencenumber"] { fill: rgb(229, 229, 229); }
+#mermaid-rni-r1 [id$="-crosshead"] path { fill: rgb(229, 229, 229); stroke: rgb(229, 229, 229); }
+#mermaid-rni-r1 .messageText { fill: rgb(229, 229, 229); stroke: none; }
+#mermaid-rni-r1 .labelBox { stroke: rgb(161, 161, 161); fill: transparent; filter: none; }
+#mermaid-rni-r1 .labelText, #mermaid-rni-r1 .labelText > tspan { fill: rgb(229, 229, 229); stroke: none; }
+#mermaid-rni-r1 .loopText, #mermaid-rni-r1 .loopText > tspan { fill: rgb(229, 229, 229); stroke: none; }
+#mermaid-rni-r1 .sectionTitle, #mermaid-rni-r1 .sectionTitle > tspan { fill: rgb(229, 229, 229); stroke: none; }
+#mermaid-rni-r1 .loopLine { stroke-width: 2px; stroke-dasharray: 2, 2; stroke: rgb(161, 161, 161); fill: rgb(161, 161, 161); }
+#mermaid-rni-r1 .note { stroke: rgb(161, 161, 161); fill: rgb(45, 45, 45); }
+#mermaid-rni-r1 .noteText, #mermaid-rni-r1 .noteText > tspan { fill: rgb(229, 229, 229); stroke: none; font-weight: normal; }
+#mermaid-rni-r1 .activation0 { fill: transparent; stroke: rgba(0, 0, 0, 0); }
+#mermaid-rni-r1 .activation1 { fill: transparent; stroke: rgba(0, 0, 0, 0); }
+#mermaid-rni-r1 .activation2 { fill: transparent; stroke: rgba(0, 0, 0, 0); }
+#mermaid-rni-r1 .actorPopupMenu { position: absolute; }
+#mermaid-rni-r1 .actorPopupMenuPanel { position: absolute; fill: transparent; box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px; filter: drop-shadow(rgba(0, 0, 0, 0.4) 3px 5px 2px); }
+#mermaid-rni-r1 .actor-man circle, #mermaid-rni-r1 line { fill: transparent; stroke-width: 2px; }
+#mermaid-rni-r1 g rect.rect { filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); stroke: rgb(161, 161, 161); }
+#mermaid-rni-r1 .node .neo-node { stroke: rgb(161, 161, 161); }
+#mermaid-rni-r1 [data-look="neo"].node rect, #mermaid-rni-r1 [data-look="neo"].cluster rect, #mermaid-rni-r1 [data-look="neo"].node polygon { stroke: url("#mermaid-rni-r1-gradient"); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
+#mermaid-rni-r1 [data-look="neo"].node path { stroke: url("#mermaid-rni-r1-gradient"); stroke-width: 1px; }
+#mermaid-rni-r1 [data-look="neo"].node .outer-path { filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
+#mermaid-rni-r1 [data-look="neo"].node .neo-line path { stroke: rgb(161, 161, 161); filter: none; }
+#mermaid-rni-r1 [data-look="neo"].node circle { stroke: url("#mermaid-rni-r1-gradient"); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
+#mermaid-rni-r1 [data-look="neo"].node circle .state-start { fill: rgb(0, 0, 0); }
+#mermaid-rni-r1 [data-look="neo"].icon-shape .icon { fill: url("#mermaid-rni-r1-gradient"); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
+#mermaid-rni-r1 [data-look="neo"].icon-shape .icon-neo path { stroke: url("#mermaid-rni-r1-gradient"); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
+#mermaid-rni-r1 :root { --mermaid-font-family: "Anthropic Sans",system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+participant AI Agent
+participant x402 API
+participant ZK Prover
+participant CreditRegistry
+participant USDC Contract
+Note over AI Agent,USDC Contract: First, agent proves its creditworthiness
+Note over AI Agent,USDC Contract: ~8 seconds (Noir UltraPlonk)
+Note over AI Agent,USDC Contract: API verifies proof on-chain
+Note over AI Agent,USDC Contract: Facilitator records payment, score updates
+AI Agent->>x402 API: GET /api/premium-data
+x402 API-->>AI Agent: 402 Payment Required (standard price: $0.001)
+AI Agent->>CreditRegistry: getCommitment(agentAddress)
+CreditRegistry-->>AI Agent: bytes32 scoreCommitment
+AI Agent->>ZK Prover: generateProof(score, threshold=600, commitment)
+ZK Prover-->>AI Agent: proof + publicInputs
+AI Agent->>x402 API: GET /api/premium-data + X-CREDIT-PROOF header
+x402 API->>CreditRegistry: verify(proof, publicInputs)
+CreditRegistry-->>x402 API: ✓ valid — Silver tier
+AI Agent->>USDC Contract: TransferWithAuthorization (silver price: $0.0008)
+USDC Contract-->>x402 API: Transfer confirmed
+x402 API-->>AI Agent: 200 OK — premium data (20% discount applied)
+x402 API->>CreditRegistry: recordPayment(agent, amount, nonce)
+CreditRegistry-->>CreditRegistry: Score: 682 → 683
+```
 
 💡 Key Insight: The ZK proof is generated once and cached for 12 hours (~3600 blocks).
 Subsequent requests within the window reuse the cached proof receipt — no re-proving needed.
@@ -301,87 +309,46 @@ Subsequent requests within the window reuse the cached proof receipt — no re-p
 
 AgentCredit consists of a modular framework allowing agents to fetch their score and prove logic entirely autonomously.
 
-<div align="center">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 700" width="780" height="700">
-  <defs>
-    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#333"/></marker>
-  </defs>
-  <rect width="780" height="700" fill="#ffffff"/>
-  <!-- Layer 5 label -->
-  <text x="390" y="22" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="14" fill="#333" font-weight="bold">Layer 5 — Frontend</text>
-  <rect x="215" y="30" width="350" height="50" rx="18" ry="18" fill="#b3d9ff" stroke="#333" stroke-width="2.5"/>
-  <text x="390" y="52" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">Next.js Dashboard</text>
-  <text x="390" y="70" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">Score Lookup + ZK Proof Generator</text>
-  <!-- Arrow L5→L4 -->
-  <line x1="390" y1="80" x2="390" y2="115" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- Layer 4 label -->
-  <text x="390" y="132" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="14" fill="#333" font-weight="bold">Layer 4 — ZK System</text>
-  <!-- Noir Circuit -->
-  <rect x="55" y="140" width="200" height="50" rx="18" ry="18" fill="#ffb3b3" stroke="#333" stroke-width="2.5"/>
-  <text x="155" y="162" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">Noir Circuit</text>
-  <text x="155" y="178" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">credit_proof.nr</text>
-  <!-- Arrow → Verifier -->
-  <line x1="255" y1="165" x2="285" y2="165" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- Solidity Verifier -->
-  <rect x="290" y="140" width="200" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5"/>
-  <text x="390" y="162" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">Solidity Verifier</text>
-  <text x="390" y="178" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">ZKVerifier.sol</text>
-  <!-- Arrow → ProofCache -->
-  <line x1="490" y1="165" x2="520" y2="165" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- ProofCache -->
-  <rect x="525" y="140" width="200" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5"/>
-  <text x="625" y="162" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">ProofCache</text>
-  <text x="625" y="178" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">12h validity window</text>
-  <!-- Arrow L4→L3 -->
-  <line x1="390" y1="190" x2="390" y2="240" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- Layer 3 label -->
-  <text x="390" y="258" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="14" fill="#333" font-weight="bold">Layer 3 — Smart Contracts</text>
-  <!-- CreditRegistry -->
-  <rect x="105" y="265" width="250" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5"/>
-  <text x="230" y="287" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">CreditRegistry.sol</text>
-  <text x="230" y="303" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">Score + commitment</text>
-  <!-- Arrow ↔ -->
-  <line x1="355" y1="290" x2="415" y2="290" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- CreditLinePaymaster -->
-  <rect x="420" y="265" width="260" height="50" rx="18" ry="18" fill="#1a1a1a" stroke="#333" stroke-width="2.5"/>
-  <text x="550" y="287" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#ffffff">CreditLinePaymaster</text>
-  <text x="550" y="303" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#cccccc">ERC-4337 deferred payment</text>
-  <!-- Arrow L3→L2 -->
-  <line x1="390" y1="315" x2="390" y2="365" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- Layer 2 label -->
-  <text x="390" y="383" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="14" fill="#333" font-weight="bold">Layer 2 — Indexer</text>
-  <!-- The Graph -->
-  <ellipse cx="230" cy="420" rx="120" ry="30" fill="#b3d9ff" stroke="#333" stroke-width="2"/>
-  <text x="230" y="416" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">The Graph</text>
-  <text x="230" y="433" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">Subgraph indexer</text>
-  <!-- Arrow → -->
-  <line x1="350" y1="420" x2="420" y2="420" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- BullMQ Worker -->
-  <rect x="425" y="395" width="230" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5"/>
-  <text x="540" y="417" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">BullMQ Worker</text>
-  <text x="540" y="433" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">recordPayment() caller</text>
-  <!-- Arrow L2→L1 -->
-  <line x1="390" y1="450" x2="390" y2="500" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- Layer 1 label -->
-  <text x="390" y="518" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="14" fill="#333" font-weight="bold">Layer 1 — x402 Payment Rail</text>
-  <!-- Express API -->
-  <rect x="40" y="525" width="210" height="50" rx="18" ry="18" fill="#ffb3b3" stroke="#333" stroke-width="2.5"/>
-  <text x="145" y="547" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">Express API</text>
-  <text x="145" y="563" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">@x402/express middleware</text>
-  <!-- Arrow → -->
-  <line x1="250" y1="550" x2="275" y2="550" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- creditGate -->
-  <rect x="280" y="525" width="210" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5"/>
-  <text x="385" y="547" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">creditGate.ts</text>
-  <text x="385" y="563" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">Tiered pricing logic</text>
-  <!-- Arrow → -->
-  <line x1="490" y1="550" x2="520" y2="550" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
-  <!-- facilitatorHook -->
-  <rect x="525" y="525" width="220" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5"/>
-  <text x="635" y="547" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="13" fill="#333">facilitatorHook.ts</text>
-  <text x="635" y="563" text-anchor="middle" font-family="'Segoe Print','Comic Sans MS',cursive" font-size="11" fill="#555">Event enqueuer</text>
-</svg>
-</div>
+```mermaid
+graph TB
+    subgraph "Layer 5 — Frontend"
+        DASH["Next.js Dashboard<br/>Score Lookup + ZK Proof Generator"]
+    end
+
+    subgraph "Layer 4 — ZK System"
+        CIRCUIT["Noir Circuit<br/>credit_proof.nr"]
+        VERIFIER["Solidity Verifier<br/>ZKVerifier.sol"]
+        CACHE["ProofCache<br/>12h validity window"]
+    end
+
+    subgraph "Layer 3 — Smart Contracts"
+        REGISTRY["CreditRegistry.sol<br/>Score storage + commitment"]
+        PAYMASTER["CreditLinePaymaster.sol<br/>ERC-4337 deferred payment"]
+    end
+
+    subgraph "Layer 2 — Indexer"
+        GRAPH["The Graph Subgraph<br/>AuthorizationUsed events"]
+        KEEPER["Keeper Bot<br/>recordPayment() caller"]
+    end
+
+    subgraph "Layer 1 — x402 Payment Rail"
+        API["Express API<br/>@x402/express middleware"]
+        GATE["creditGate.ts<br/>Tiered pricing logic"]
+        HOOK["facilitatorHook.ts<br/>Post-payment recorder"]
+    end
+
+    DASH -->|reads score| REGISTRY
+    DASH -->|generates| CIRCUIT
+    CIRCUIT -->|compiled to| VERIFIER
+    GATE -->|verifies via| VERIFIER
+    VERIFIER -->|checks against| CACHE
+    CACHE -->|stores receipts| REGISTRY
+    GRAPH -->|indexes events| KEEPER
+    KEEPER -->|calls| REGISTRY
+    API --> GATE
+    API --> HOOK
+    HOOK -->|records| REGISTRY
+```
 
 ### 2.2 Component Summary
 
