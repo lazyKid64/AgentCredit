@@ -90,13 +90,16 @@ credit bureau, no KYC, and no revealed payment history.
 
 x402 has processed 165M+ payments — agents can transact autonomously. BUT every transaction is treated identically regardless of agent history. A new agent with 0 payments gets the same price as one with 10,000 payments. Services cannot verify agent trustworthiness within a single HTTP request lifecycle. The result: no incentive for agents to build payment reputation.
 
-## Addresses and the Transaction Hashes
+## 📄 Deployed Addresses
 
-`CreditRegistry:` [0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13](https://sepolia.basescan.org/address/0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13)
+All smart contracts are deployed on the **Base Sepolia** test network (Chain ID: `84532`).
 
-`CreditLinePaymaster:` Coming in V2
-
-`ZKVerifier:` Coming in V2
+| Contract | Address | Block Explorer Link | Status |
+|----------|---------|---------------------|--------|
+| **CreditRegistry** | `0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13` | [View on Basescan](https://sepolia.basescan.org/address/0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13) | 🟢 Active |
+| **Testnet USDC** | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` | [View on Basescan](https://sepolia.basescan.org/address/0x036CbD53842c5426634e7929541eC2318f3dCF7e) | 🟢 Active |
+| **CreditLinePaymaster**| `TBD` | N/A | 🟡 Coming in V2 |
+| **ZKVerifier** | `TBD` | N/A | 🟡 Coming in V2 |
 
 ## Table of Contents
 
