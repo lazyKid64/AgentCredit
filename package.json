@@ -3,5 +3,11 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "demo": "cd packages/api && npm run demo",
+    "test:contracts": "cd packages/contracts && forge test -v",
+    "test:invariants": "cd packages/contracts && forge test --match-contract Invariant -v",
+    "coverage": "cd packages/contracts && forge coverage --ir-minimum --report summary --no-match-contract Invariant"
+  }
 }

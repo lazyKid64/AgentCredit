@@ -31,7 +31,7 @@ function logSeparator(): void {
 }
 
 // ── Main demo ────────────────────────────────────────────────────
-async function runDemo(): Promise<void> {
+export async function runSimulation(): Promise<void> {
   console.log('\n\x1b[1m\x1b[35m╔══════════════════════════════════════════════╗\x1b[0m');
   console.log('\x1b[1m\x1b[35m║   AgentCredit — Full Protocol Demo            ║\x1b[0m');
   console.log('\x1b[1m\x1b[35m║   (Async Queue + Poseidon + ProofCache)       ║\x1b[0m');
@@ -314,7 +314,10 @@ async function runDemo(): Promise<void> {
   console.log('\x1b[1m\x1b[32m╚══════════════════════════════════════════════╝\x1b[0m\n');
 }
 
-runDemo().catch((err) => {
-  console.error('\n\x1b[31m[FATAL]\x1b[0m', err);
-  process.exit(1);
-});
+// Self-executing entry point for `npm run simulate`
+if (require.main === module) {
+  runSimulation().catch((err) => {
+    console.error('\n\x1b[31m[FATAL]\x1b[0m', err);
+    process.exit(1);
+  });
+}

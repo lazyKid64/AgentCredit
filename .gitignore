@@ -6,3 +6,9 @@ artifacts/
 target/
 .next/
 Rajput/
+
+# Slither / Coverage artifacts
+slither-report.json
+lcov.info
+coverage-html/
+storage-layout-snapshot.json
