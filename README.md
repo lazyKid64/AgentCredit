@@ -666,7 +666,7 @@ cd packages/api && npm run simulate
 
 ## 10. Production Architecture
 
-| Feature | Demo (Hackathon) | Production |
+| Feature | Demo | Production |
 |---------|-----------------|------------|
 | Contract upgradeability | ❌ Immutable | ✅ UUPS Proxy |
 | Admin control | ⚠ Single EOA | ✅ 3-of-5 Gnosis Safe + 48h Timelock |
