@@ -10,13 +10,13 @@
 
 | Contract | Address | Network |
 |---|---|---|
-| CreditRegistry (Proxy) | `[fill after deploy]` | Base Mainnet |
+| CreditRegistry (Proxy) | `0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13` | Base Mainnet |
 | CreditRegistry (Implementation) | `[fill after deploy]` | Base Mainnet |
 | ProofCache (Proxy) | `[fill after deploy]` | Base Mainnet |
 | ProofCache (Implementation) | `[fill after deploy]` | Base Mainnet |
 | AgentCreditTimelock | `[fill after deploy]` | Base Mainnet |
-| CreditLinePaymaster | `[fill after deploy]` | Base Mainnet |
-| ZKVerifier | `[fill after deploy]` | Base Mainnet |
+| CreditLinePaymaster | `0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085` | Base Mainnet |
+| ZKVerifier | `0x394B61757c22833d0188eED6d3B302d4E276822e` | Base Mainnet |
 | USDC | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | Base Mainnet |
 
 ---
@@ -200,10 +200,10 @@ REDIS_URL=rediss://...                       # Redis with TLS
 REDIS_TLS=true
 
 # Contract addresses (fill after deployment)
-CREDIT_REGISTRY_ADDRESS=0x...
-CREDIT_LINE_PAYMASTER_ADDRESS=0x...
+CREDIT_REGISTRY_ADDRESS=0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13
+CREDIT_LINE_PAYMASTER_ADDRESS=0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085
 PROOF_CACHE_ADDRESS=0x...
-ZK_VERIFIER_ADDRESS=0x...
+ZK_VERIFIER_ADDRESS=0x394B61757c22833d0188eED6d3B302d4E276822e
 USDC_ADDRESS=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
 
 # Keys (NEVER commit to git)
