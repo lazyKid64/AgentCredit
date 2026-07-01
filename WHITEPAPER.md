@@ -280,3 +280,9 @@ The immediate roadmap involves migrating the protocol to Base Mainnet following 
 4. ERC-8004: Trustless AI Agent Identity — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-8004)
 5. Noir Language Documentation — [noir-lang.org](https://noir-lang.org/docs)
 6. ERC-4337: Account Abstraction — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-4337)
+
+---
+
+<div align="center">
+Built for the x402 ecosystem · Powered by Base · Secured by Noir ZK
+</div>
