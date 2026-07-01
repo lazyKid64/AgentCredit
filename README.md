@@ -6,13 +6,14 @@
 
 **The first cryptographic credit scoring system for AI agents — powered by x402 payment history, zero-knowledge proofs, and ERC-8004 identity**
 
-[![x402 Integration](https://img.shields.io/badge/x402-Compatible-blue?style=flat-square)](#)
-[![Noir ZK](https://img.shields.io/badge/ZK_Proofs-Noir-black?style=flat-square)](#)
-[![Base Sepolia](https://img.shields.io/badge/Network-Base_Sepolia-blue?style=flat-square)](#)
+[![x402 Integration](https://img.shields.io/badge/x402-Compatible-blue?style=for-the-badge)](#)
+[![Noir ZK](https://img.shields.io/badge/ZK_Proofs-Noir-black?style=for-the-badge)](#)
+[![Base Sepolia](https://img.shields.io/badge/Network-Base_Sepolia-blue?style=for-the-badge)](#)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](#12-project-license)
+
 [![Tests](https://img.shields.io/badge/Tests-27_passed-success?style=flat-square)](#8-testing)
 [![Invariants](https://img.shields.io/badge/Invariants-5_properties-success?style=flat-square)](#8-testing)
 [![Coverage](https://img.shields.io/badge/Branch_Coverage-82%25-green?style=flat-square)](#8-testing)
-
 [![Solidity](https://img.shields.io/badge/Solidity-%23363636.svg?style=flat-square&logo=solidity&logoColor=white)](#)
 [![Foundry](https://img.shields.io/badge/Foundry-black?style=flat-square)](#)
 [![Next JS](https://img.shields.io/badge/Next.js-black?style=flat-square&logo=next.js&logoColor=white)](#)
@@ -31,10 +32,6 @@
 
 </div>
 
----
-
-## What is AgentCredit Protocol?
-
 AgentCredit Protocol is an on-chain credit infrastructure layer built
 on top of the [x402 payment standard](https://x402.org). It solves a
 fundamental trust gap in the emerging machine-to-machine economy: AI
@@ -52,59 +49,21 @@ score or any individual transaction. The service provider verifies this
 proof cryptographically within the HTTP request lifecycle and returns a
 lower price automatically.
 
-**Three primitives compose the full protocol:**
+## Deployed Contracts (Base Sepolia)
 
-**① The CreditRegistry** is a UUPS-upgradeable Solidity contract on Base
-that stores per-agent score vectors: payment count, total USDC volume,
-account age, payment velocity, and dispute history. A weighted formula
-collapses these into a single score. After every confirmed x402 payment,
-a facilitator bot calls `recordPayment()` which recomputes the score and
-anchors a Poseidon hash commitment on-chain. This commitment is the
-cryptographic anchor for ZK proofs.
+`CreditRegistry (Proxy):` [0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13](https://sepolia.basescan.org/address/0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13)
 
-**② The ZK Proof System** is a Noir circuit that takes the agent's
-private score and produces a proof that the score exceeds a public
-threshold — without revealing the score itself. The circuit uses
-Poseidon hash (BN254 curve) to verify the score commitment matches what
-the CreditRegistry stored. The generated proof is base64-encoded and
-sent as an `X-CREDIT-PROOF` HTTP header on the next API request. The
-`ProofCache` contract stores valid receipts for 12 hours (~3600 blocks)
-so agents prove once and reuse, instead of re-proving on every call.
+`Testnet USDC:` [0x036CbD53842c5426634e7929541eC2318f3dCF7e](https://sepolia.basescan.org/address/0x036CbD53842c5426634e7929541eC2318f3dCF7e)
 
-**③ The x402 Credit Gate** is an Express.js middleware layer that sits
-in front of any x402-protected API endpoint. When a request arrives, it
-first checks `ProofCache` for a valid cached receipt. If found, it
-applies the agent's tier pricing automatically — Gold (≥750, −50%),
-Silver (≥600, −20%), or Unknown (standard price). The entire proof
-verification and tier decision happens within the HTTP request lifecycle,
-requiring no additional round trips from the agent.
+`CreditLinePaymaster:` [0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085](https://sepolia.basescan.org/address/0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085)
 
-**The result:** a self-reinforcing credit graph where trustworthy agents
-pay less, service providers earn more from reliable counterparties, and
-the entire system is verifiable by anyone on-chain — with no centralized
-credit bureau, no KYC, and no revealed payment history.
-
----
-
-**AgentCredit** enables privacy-preserving, on-chain credit scores that unlock tiered pricing and paymaster deferred payments for AI agents.
-
-x402 has processed 165M+ payments — agents can transact autonomously. BUT every transaction is treated identically regardless of agent history. A new agent with 0 payments gets the same price as one with 10,000 payments. Services cannot verify agent trustworthiness within a single HTTP request lifecycle. The result: no incentive for agents to build payment reputation.
-
-## 📄 Deployed Addresses
-
-All smart contracts are deployed on the **Base Sepolia** test network (Chain ID: `84532`).
-
-| Contract | Address | Block Explorer Link | Status |
-|----------|---------|---------------------|--------|
-| **CreditRegistry** | `0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13` | [View on Basescan](https://sepolia.basescan.org/address/0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13) | 🟢 Active |
-| **Testnet USDC** | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` | [View on Basescan](https://sepolia.basescan.org/address/0x036CbD53842c5426634e7929541eC2318f3dCF7e) | 🟢 Active |
-| **CreditLinePaymaster**| `0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085` | [View on Basescan](https://sepolia.basescan.org/address/0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085) | 🟢 Active |
-| **ZKVerifier** | `0x394B61757c22833d0188eED6d3B302d4E276822e` | [View on Basescan](https://sepolia.basescan.org/address/0x394B61757c22833d0188eED6d3B302d4E276822e) | 🟢 Active |
+`ZKVerifier:` [0x394B61757c22833d0188eED6d3B302d4E276822e](https://sepolia.basescan.org/address/0x394B61757c22833d0188eED6d3B302d4E276822e)
 
 ## Table of Contents
 
 * [1. Overview](#1-overview)
-  * [1.1 Introduction](#11-introduction)
+  * [What led to this project?](#what-led-to-this-project)
+  * [1.1 The Problem We Solve](#11-the-problem-we-solve)
   * [1.2 The AgentCredit Solution](#12-the-agentcredit-solution)
   * [1.3 How It Works](#13-how-it-works)
 * [2. Architecture](#2-architecture)
@@ -123,9 +82,10 @@ All smart contracts are deployed on the **Base Sepolia** test network (Chain ID:
 * [7. Smart Contracts](#7-smart-contracts)
 * [8. Testing](#8-testing)
 * [9. Security](#9-security)
-* [10. Project Structure](#10-project-structure)
-* [11. Contributing](#11-contributing)
+* [10. Production Architecture](#10-production-architecture)
+* [11. Project Structure](#11-project-structure)
 * [12. Project License](#12-project-license)
+* [13. References](#13-references)
 
 ---
 
@@ -133,22 +93,19 @@ All smart contracts are deployed on the **Base Sepolia** test network (Chain ID:
 
 **AgentCredit** is a protocol that replaces the traditional approach of unverified identity in machine transactions with a single, unified continuous credit scoring distribution. Built on Base Sepolia using Noir ZK Proofs, it performs all pricing and validation mathematics entirely on-chain.
 
-### 1.1 Introduction
+### What led to this project?
 
-**The problem we solve:** Existing API and protocol systems treat all autonomous agents equally. This means:
-- No incentives for good behavior or consistent payments
-- No way to verify trustworthiness without invasive identity checks
-- Capital inefficiencies for high-frequency trading agents
+AI agent commerce has entered mainstream consciousness in the wake of
+autonomous LLM pipelines proliferating through enterprise workflows,
+but the trust infrastructure is still in its infancy. Agents can pay
+autonomously via x402, but every payment is treated as a stranger-to-stranger
+transaction with no memory of prior behavior. Many interactions of relevance
+to the machine economy involve repeated, high-frequency transactions between
+the same counterparties — yet today's payment protocols don't allow us to
+distinguish a trustworthy agent with 50,000 payments from one with zero.
+AgentCredit was built to close that gap.
 
-### 1.2 The AgentCredit Solution
-
-AgentCredit replaces discrete payments with a continuous credit layer. By analyzing x402 payment history, AgentCredit computes a decentralized credit score from 300 to 900.
-
----
-
-## 🚨 The Problem
-
-The x402 protocol solved agent payments. AgentCredit solves agent trust.
+### 1.1 The Problem We Solve
 
 ### Problem 1 — Flat Pricing Ignores Agent Reputation
 
@@ -212,7 +169,9 @@ tying up capital in agent wallets that could be deployed more efficiently.
 | No incentive to build history | Every x402 payment is indexed and raises score — discounts compound over time |
 | No deferred payment primitive | `CreditLinePaymaster` (ERC-4337) extends credit lines to agents with score ≥ 700 |
 
----
+### 1.2 The AgentCredit Solution
+
+AgentCredit replaces discrete payments with a continuous credit layer. By analyzing x402 payment history, AgentCredit computes a decentralized credit score from 300 to 900.
 
 ### 1.3 How It Works
 
@@ -224,87 +183,122 @@ tying up capital in agent wallets that could be deployed more efficiently.
 6. **Payment Authorization**: Agent receives tiered discount and authorizes payment.
 7. **Score Update**: Facilitator anchors the payment on-chain, boosting the score.
 
-```mermaid
-sequenceDiagram
-#mermaid-rni-r1 { font-family: "Anthropic Sans", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; fill: rgb(229, 229, 229); }
-#mermaid-rni-r1 .edge-animation-slow { stroke-dashoffset: 900; animation: 50s linear 0s infinite normal none running dash; stroke-linecap: round; stroke-dasharray: 9, 5 !important; }
-#mermaid-rni-r1 .edge-animation-fast { stroke-dashoffset: 900; animation: 20s linear 0s infinite normal none running dash; stroke-linecap: round; stroke-dasharray: 9, 5 !important; }
-#mermaid-rni-r1 .error-icon { fill: rgb(204, 120, 92); }
-#mermaid-rni-r1 .error-text { fill: rgb(51, 135, 163); stroke: rgb(51, 135, 163); }
-#mermaid-rni-r1 .edge-thickness-normal { stroke-width: 1px; }
-#mermaid-rni-r1 .edge-thickness-thick { stroke-width: 3.5px; }
-#mermaid-rni-r1 .edge-pattern-solid { stroke-dasharray: 0; }
-#mermaid-rni-r1 .edge-thickness-invisible { stroke-width: 0; fill: none; }
-#mermaid-rni-r1 .edge-pattern-dashed { stroke-dasharray: 3; }
-#mermaid-rni-r1 .edge-pattern-dotted { stroke-dasharray: 2; }
-#mermaid-rni-r1 .marker { fill: rgb(161, 161, 161); stroke: rgb(161, 161, 161); }
-#mermaid-rni-r1 .marker.cross { stroke: rgb(161, 161, 161); }
-#mermaid-rni-r1 svg { font-family: "Anthropic Sans", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; }
-#mermaid-rni-r1 p { margin: 0px; }
-#mermaid-rni-r1 .actor { stroke: rgb(161, 161, 161); fill: transparent; stroke-width: 1; }
-#mermaid-rni-r1 rect.actor.outer-path[data-look="neo"] { filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
-#mermaid-rni-r1 rect.note[data-look="neo"] { stroke: rgb(161, 161, 161); fill: rgb(45, 45, 45); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
-#mermaid-rni-r1 text.actor > tspan { fill: rgb(229, 229, 229); stroke: none; }
-#mermaid-rni-r1 .actor-line { stroke: rgb(161, 161, 161); }
-#mermaid-rni-r1 .innerArc { stroke-width: 1.5; stroke-dasharray: none; }
-#mermaid-rni-r1 .messageLine0 { stroke-width: 1.5; stroke-dasharray: none; stroke: rgb(229, 229, 229); }
-#mermaid-rni-r1 .messageLine1 { stroke-width: 1.5; stroke-dasharray: 2, 2; stroke: rgb(229, 229, 229); }
-#mermaid-rni-r1 [id$="-arrowhead"] path { fill: rgb(229, 229, 229); stroke: rgb(229, 229, 229); }
-#mermaid-rni-r1 .sequenceNumber { fill: rgb(94, 94, 94); }
-#mermaid-rni-r1 [id$="-sequencenumber"] { fill: rgb(229, 229, 229); }
-#mermaid-rni-r1 [id$="-crosshead"] path { fill: rgb(229, 229, 229); stroke: rgb(229, 229, 229); }
-#mermaid-rni-r1 .messageText { fill: rgb(229, 229, 229); stroke: none; }
-#mermaid-rni-r1 .labelBox { stroke: rgb(161, 161, 161); fill: transparent; filter: none; }
-#mermaid-rni-r1 .labelText, #mermaid-rni-r1 .labelText > tspan { fill: rgb(229, 229, 229); stroke: none; }
-#mermaid-rni-r1 .loopText, #mermaid-rni-r1 .loopText > tspan { fill: rgb(229, 229, 229); stroke: none; }
-#mermaid-rni-r1 .sectionTitle, #mermaid-rni-r1 .sectionTitle > tspan { fill: rgb(229, 229, 229); stroke: none; }
-#mermaid-rni-r1 .loopLine { stroke-width: 2px; stroke-dasharray: 2, 2; stroke: rgb(161, 161, 161); fill: rgb(161, 161, 161); }
-#mermaid-rni-r1 .note { stroke: rgb(161, 161, 161); fill: rgb(45, 45, 45); }
-#mermaid-rni-r1 .noteText, #mermaid-rni-r1 .noteText > tspan { fill: rgb(229, 229, 229); stroke: none; font-weight: normal; }
-#mermaid-rni-r1 .activation0 { fill: transparent; stroke: rgba(0, 0, 0, 0); }
-#mermaid-rni-r1 .activation1 { fill: transparent; stroke: rgba(0, 0, 0, 0); }
-#mermaid-rni-r1 .activation2 { fill: transparent; stroke: rgba(0, 0, 0, 0); }
-#mermaid-rni-r1 .actorPopupMenu { position: absolute; }
-#mermaid-rni-r1 .actorPopupMenuPanel { position: absolute; fill: transparent; box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px; filter: drop-shadow(rgba(0, 0, 0, 0.4) 3px 5px 2px); }
-#mermaid-rni-r1 .actor-man circle, #mermaid-rni-r1 line { fill: transparent; stroke-width: 2px; }
-#mermaid-rni-r1 g rect.rect { filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); stroke: rgb(161, 161, 161); }
-#mermaid-rni-r1 .node .neo-node { stroke: rgb(161, 161, 161); }
-#mermaid-rni-r1 [data-look="neo"].node rect, #mermaid-rni-r1 [data-look="neo"].cluster rect, #mermaid-rni-r1 [data-look="neo"].node polygon { stroke: url("#mermaid-rni-r1-gradient"); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
-#mermaid-rni-r1 [data-look="neo"].node path { stroke: url("#mermaid-rni-r1-gradient"); stroke-width: 1px; }
-#mermaid-rni-r1 [data-look="neo"].node .outer-path { filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
-#mermaid-rni-r1 [data-look="neo"].node .neo-line path { stroke: rgb(161, 161, 161); filter: none; }
-#mermaid-rni-r1 [data-look="neo"].node circle { stroke: url("#mermaid-rni-r1-gradient"); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
-#mermaid-rni-r1 [data-look="neo"].node circle .state-start { fill: rgb(0, 0, 0); }
-#mermaid-rni-r1 [data-look="neo"].icon-shape .icon { fill: url("#mermaid-rni-r1-gradient"); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
-#mermaid-rni-r1 [data-look="neo"].icon-shape .icon-neo path { stroke: url("#mermaid-rni-r1-gradient"); filter: drop-shadow(rgb(185, 185, 185) 1px 2px 2px); }
-#mermaid-rni-r1 :root { --mermaid-font-family: "Anthropic Sans",system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
-participant AI Agent
-participant x402 API
-participant ZK Prover
-participant CreditRegistry
-participant USDC Contract
-Note over AI Agent,USDC Contract: First, agent proves its creditworthiness
-Note over AI Agent,USDC Contract: ~8 seconds (Noir UltraPlonk)
-Note over AI Agent,USDC Contract: API verifies proof on-chain
-Note over AI Agent,USDC Contract: Facilitator records payment, score updates
-AI Agent->>x402 API: GET /api/premium-data
-x402 API-->>AI Agent: 402 Payment Required (standard price: $0.001)
-AI Agent->>CreditRegistry: getCommitment(agentAddress)
-CreditRegistry-->>AI Agent: bytes32 scoreCommitment
-AI Agent->>ZK Prover: generateProof(score, threshold=600, commitment)
-ZK Prover-->>AI Agent: proof + publicInputs
-AI Agent->>x402 API: GET /api/premium-data + X-CREDIT-PROOF header
-x402 API->>CreditRegistry: verify(proof, publicInputs)
-CreditRegistry-->>x402 API: ✓ valid — Silver tier
-AI Agent->>USDC Contract: TransferWithAuthorization (silver price: $0.0008)
-USDC Contract-->>x402 API: Transfer confirmed
-x402 API-->>AI Agent: 200 OK — premium data (20% discount applied)
-x402 API->>CreditRegistry: recordPayment(agent, amount, nonce)
-CreditRegistry-->>CreditRegistry: Score: 682 → 683
-```
+<div align="center">
+<svg viewBox="0 0 700 920" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- NODE 1 -->
+  <polygon points="350,50 480,100 350,150 220,100" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
+  <text x="350" y="95" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="350" dy="0">Agent requests</tspan>
+    <tspan x="350" dy="18">/api/premium-data</tspan>
+  </text>
+  
+  <line x1="350" y1="150" x2="350" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+  <text x="360" y="180" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">no proof header</text>
+
+  <!-- NODE 2 -->
+  <rect x="250" y="200" width="200" height="60" rx="18" ry="18" fill="#ffb3b3" stroke="#333" stroke-width="2.5" />
+  <text x="350" y="225" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="350" dy="0">402 Payment Required</tspan>
+    <tspan x="350" dy="18">Standard price: $0.001</tspan>
+  </text>
+
+  <line x1="350" y1="260" x2="350" y2="310" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+
+  <!-- NODE 3 -->
+  <rect x="230" y="310" width="240" height="70" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5" />
+  <text x="350" y="330" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="350" dy="0">Agent signs EIP-3009</tspan>
+    <tspan x="350" dy="18">TransferWithAuthorization</tspan>
+    <tspan x="350" dy="18">(USDC — no gas needed)</tspan>
+  </text>
+
+  <line x1="350" y1="380" x2="350" y2="430" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+
+  <!-- NODE 4 -->
+  <rect x="240" y="430" width="220" height="70" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
+  <text x="350" y="450" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="350" dy="0">Payment confirmed on-chain</tspan>
+    <tspan x="350" dy="18">Facilitator enqueues</tspan>
+    <tspan x="350" dy="18">recordPayment() via BullMQ</tspan>
+  </text>
+
+  <line x1="460" y1="465" x2="520" y2="465" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+
+  <!-- Ellipse next to NODE 4 -->
+  <ellipse cx="600" cy="465" rx="70" ry="40" fill="#b3d9ff" stroke="#333" stroke-width="2" />
+  <text x="600" y="450" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="600" dy="0">BullMQ worker</tspan>
+    <tspan x="600" dy="18">updates score</tspan>
+    <tspan x="600" dy="18">asynchronously</tspan>
+  </text>
+
+  <line x1="350" y1="500" x2="350" y2="550" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+
+  <!-- NODE 5 -->
+  <rect x="230" y="550" width="240" height="70" rx="18" ry="18" fill="#1a1a1a" stroke="#333" stroke-width="2.5" />
+  <text x="350" y="570" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="white">
+    <tspan x="350" dy="0">Agent generates ZK proof</tspan>
+    <tspan x="350" dy="18">Noir circuit (~8 seconds)</tspan>
+    <tspan x="350" dy="18">Proves score > threshold</tspan>
+  </text>
+
+  <line x1="470" y1="585" x2="520" y2="585" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+
+  <!-- Ellipse next to NODE 5 -->
+  <ellipse cx="600" cy="585" rx="70" ry="40" fill="#b3d9ff" stroke="#333" stroke-width="2" />
+  <text x="600" y="570" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="600" dy="0">ProofCache contract</tspan>
+    <tspan x="600" dy="18">receipt valid</tspan>
+    <tspan x="600" dy="18">12h / 3600 blocks</tspan>
+  </text>
+
+  <line x1="350" y1="620" x2="350" y2="670" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+
+  <!-- NODE 6 -->
+  <polygon points="350,670 450,720 350,770 250,720" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
+  <text x="350" y="710" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="350" dy="0">Retry with</tspan>
+    <tspan x="350" dy="18">X-CREDIT-PROOF header</tspan>
+  </text>
+
+  <!-- Left Branch from Node 6 -->
+  <line x1="250" y1="720" x2="160" y2="720" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+  <line x1="160" y1="720" x2="160" y2="820" stroke="#333" stroke-width="2" />
+  <line x1="160" y1="820" x2="250" y2="820" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+  <text x="200" y="710" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">score ≥ 750</text>
+  <text x="160" y="690" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">🥇 Gold — $0.0005</text>
+
+  <!-- Right Branch from Node 6 -->
+  <line x1="450" y1="720" x2="540" y2="720" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+  <line x1="540" y1="720" x2="540" y2="820" stroke="#333" stroke-width="2" />
+  <line x1="540" y1="820" x2="450" y2="820" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+  <text x="500" y="710" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">score ≥ 600</text>
+  <text x="540" y="690" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">🥈 Silver — $0.0008</text>
+
+  <!-- Down Branch from Node 6 -->
+  <line x1="350" y1="770" x2="350" y2="800" stroke="#333" stroke-width="2" marker-end="url(#arrow1)" />
+  <text x="360" y="790" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">no valid proof</text>
+
+  <!-- NODE 7 -->
+  <rect x="250" y="800" width="200" height="70" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
+  <text x="350" y="820" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="350" dy="0">200 OK — premium data</tspan>
+    <tspan x="350" dy="18">Tier discount applied</tspan>
+    <tspan x="350" dy="18">Score updated on-chain</tspan>
+  </text>
+</svg>
+</div>
 
 💡 Key Insight: The ZK proof is generated once and cached for 12 hours (~3600 blocks).
 Subsequent requests within the window reuse the cached proof receipt — no re-proving needed.
+
+---
 
 ## 2. Architecture
 
@@ -312,46 +306,110 @@ Subsequent requests within the window reuse the cached proof receipt — no re-p
 
 AgentCredit consists of a modular framework allowing agents to fetch their score and prove logic entirely autonomously.
 
-```mermaid
-graph TB
-    subgraph "Layer 5 — Frontend"
-        DASH["Next.js Dashboard<br/>Score Lookup + ZK Proof Generator"]
-    end
+<div align="center">
+<svg viewBox="0 0 780 680" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+  </defs>
 
-    subgraph "Layer 4 — ZK System"
-        CIRCUIT["Noir Circuit<br/>credit_proof.nr"]
-        VERIFIER["Solidity Verifier<br/>ZKVerifier.sol"]
-        CACHE["ProofCache<br/>12h validity window"]
-    end
+  <!-- LAYER 5 -->
+  <text x="40" y="40" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 5 — Frontend</text>
+  <rect x="240" y="50" width="300" height="50" rx="18" ry="18" fill="#b3d9ff" stroke="#333" stroke-width="2.5" />
+  <text x="390" y="70" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="390" dy="0">Next.js Dashboard</tspan>
+    <tspan x="390" dy="18">Score Lookup + ZK Proof Generator</tspan>
+  </text>
+  
+  <line x1="390" y1="100" x2="390" y2="150" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
 
-    subgraph "Layer 3 — Smart Contracts"
-        REGISTRY["CreditRegistry.sol<br/>Score storage + commitment"]
-        PAYMASTER["CreditLinePaymaster.sol<br/>ERC-4337 deferred payment"]
-    end
+  <!-- LAYER 4 -->
+  <text x="40" y="140" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 4 — ZK System</text>
+  
+  <rect x="100" y="150" width="160" height="50" rx="18" ry="18" fill="#ffb3b3" stroke="#333" stroke-width="2.5" />
+  <text x="180" y="170" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="180" dy="0">Noir Circuit</tspan>
+    <tspan x="180" dy="18">credit_proof.nr</tspan>
+  </text>
+  <line x1="260" y1="175" x2="310" y2="175" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+  
+  <rect x="310" y="150" width="160" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
+  <text x="390" y="170" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="390" dy="0">ZKVerifier.sol</tspan>
+    <tspan x="390" dy="18">On-chain verifier</tspan>
+  </text>
+  <line x1="470" y1="175" x2="520" y2="175" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
 
-    subgraph "Layer 2 — Indexer"
-        GRAPH["The Graph Subgraph<br/>AuthorizationUsed events"]
-        KEEPER["Keeper Bot<br/>recordPayment() caller"]
-    end
+  <rect x="520" y="150" width="160" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5" />
+  <text x="600" y="170" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="600" dy="0">ProofCache</tspan>
+    <tspan x="600" dy="18">12h validity window</tspan>
+  </text>
 
-    subgraph "Layer 1 — x402 Payment Rail"
-        API["Express API<br/>@x402/express middleware"]
-        GATE["creditGate.ts<br/>Tiered pricing logic"]
-        HOOK["facilitatorHook.ts<br/>Post-payment recorder"]
-    end
+  <line x1="390" y1="200" x2="390" y2="250" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
 
-    DASH -->|reads score| REGISTRY
-    DASH -->|generates| CIRCUIT
-    CIRCUIT -->|compiled to| VERIFIER
-    GATE -->|verifies via| VERIFIER
-    VERIFIER -->|checks against| CACHE
-    CACHE -->|stores receipts| REGISTRY
-    GRAPH -->|indexes events| KEEPER
-    KEEPER -->|calls| REGISTRY
-    API --> GATE
-    API --> HOOK
-    HOOK -->|records| REGISTRY
-```
+  <!-- LAYER 3 -->
+  <text x="40" y="240" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 3 — Smart Contracts</text>
+  
+  <rect x="200" y="250" width="180" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
+  <text x="290" y="270" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="290" dy="0">CreditRegistry.sol</tspan>
+    <tspan x="290" dy="18">Score + Poseidon commitment</tspan>
+  </text>
+
+  <rect x="400" y="250" width="180" height="50" rx="18" ry="18" fill="#1a1a1a" stroke="#333" stroke-width="2.5" />
+  <text x="490" y="270" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="white">
+    <tspan x="490" dy="0">CreditLinePaymaster</tspan>
+    <tspan x="490" dy="18">ERC-4337 deferred gas</tspan>
+  </text>
+
+  <line x1="390" y1="300" x2="390" y2="350" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <!-- LAYER 2 -->
+  <text x="40" y="340" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 2 — Indexer</text>
+  
+  <ellipse cx="290" cy="375" rx="90" ry="25" fill="#b3d9ff" stroke="#333" stroke-width="2" />
+  <text x="290" y="365" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="290" dy="0">The Graph Subgraph</tspan>
+    <tspan x="290" dy="18">AuthorizationUsed events</tspan>
+  </text>
+
+  <line x1="380" y1="375" x2="430" y2="375" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <rect x="430" y="350" width="160" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5" />
+  <text x="510" y="370" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="510" dy="0">BullMQ Keeper Bot</tspan>
+    <tspan x="510" dy="18">recordPayment() caller</tspan>
+  </text>
+
+  <line x1="390" y1="400" x2="390" y2="450" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <!-- LAYER 1 -->
+  <text x="40" y="440" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 1 — x402 Payment Rail</text>
+  
+  <rect x="100" y="450" width="160" height="50" rx="18" ry="18" fill="#ffb3b3" stroke="#333" stroke-width="2.5" />
+  <text x="180" y="470" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="180" dy="0">Express API</tspan>
+    <tspan x="180" dy="18">@x402/express</tspan>
+  </text>
+  <line x1="260" y1="475" x2="310" y2="475" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <rect x="310" y="450" width="160" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
+  <text x="390" y="470" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="390" dy="0">creditGate.ts</tspan>
+    <tspan x="390" dy="18">Tiered pricing</tspan>
+  </text>
+  <line x1="470" y1="475" x2="520" y2="475" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <rect x="520" y="450" width="160" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5" />
+  <text x="600" y="470" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
+    <tspan x="600" dy="0">facilitatorHook.ts</tspan>
+    <tspan x="600" dy="18">Event enqueuer</tspan>
+  </text>
+
+</svg>
+</div>
 
 ### 2.2 Component Summary
 
@@ -362,6 +420,8 @@ graph TB
 | packages/indexer | The Graph subgraph | subgraph.yaml, src/mapping.ts |
 | packages/api | Express x402 API | creditGate.ts, zkVerifier.ts, facilitatorHook.ts |
 | packages/dashboard | Next.js frontend | app/page.tsx, app/prove/page.tsx |
+
+---
 
 ## 3. Features
 
@@ -376,6 +436,8 @@ graph TB
 | Agent Dashboard | Score Lookup + ZK Proof Generator | Next.js, React, Tailwind, viem |
 | Blockchain Network | High-performance L2 execution environment | Base Sepolia |
 
+---
+
 ## 4. Technical Overview
 
 ### 4.1 Credit Score Formula
@@ -389,15 +451,14 @@ Score = 300 (floor)
       + min(accountAgeDays, 365) / 365 × 150         → Account Age    (max 150pts)
       + min(avgPaymentsPerDay30d, 50) / 50 × 70      → Velocity       (max 70pts)
       - disputeCount × 30                             → Dispute Penalty
-      
 Clamped to range [300, 900]
 ```
 
 | Tier | Score Range | Price Discount | Real Example |
 | --- | --- | --- | --- |
-| 🥇 Gold | 750–900 | 50% off | Agent C: 523 pts |
-| 🥈 Silver | 600–749 | 20% off | Agent B: 476 pts |
-| ⬜ Unknown | 300–599 | Standard price | Agent A: 491 pts |
+| 🥇 Gold | 750–900 | 50% off | Agent C: 822 pts |
+| 🥈 Silver | 600–749 | 20% off | Agent B: 674 pts |
+| ⬜ Unknown | 300–599 | Standard price | Agent A: 521 pts |
 
 ### 4.2 ZK Proof System
 
@@ -405,6 +466,8 @@ Zero-Knowledge Proofs in AgentCredit allow agents to authenticate their credit t
 
 ```noir
 // packages/circuits/credit_proof/src/main.nr
+use dep::poseidon;
+
 fn main(
     score: Field,              // PRIVATE: never revealed on-chain
     threshold: pub Field,      // PUBLIC: e.g. 750 for Gold tier
@@ -415,10 +478,13 @@ fn main(
     assert(score as u64 >= 300);             // score is valid
     assert(score as u64 <= 900);             // score is valid
     assert(score as u64 >= threshold as u64); // score exceeds threshold
-    let computed = std::hash::pedersen_hash([score, agent_address]);
-    assert(computed == commitment);           // commitment is authentic
+    let computed_commitment: Field = poseidon::bn254::hash_2([score, agent_address]);
+    // Poseidon BN254 — matches PoseidonT3.hash() in CreditRegistry.sol
+    assert(computed_commitment == commitment);           // commitment is authentic
 }
 ```
+
+---
 
 ## 5. API Reference
 
@@ -492,9 +558,12 @@ curl -v -H "X-CREDIT-PROOF: eyJwcm9vZiI6IjB4Li4uIiwicHVibGljSW5wdXRzIjpbXX0=" ht
 }
 ```
 
+---
+
 ## 6. Getting Started
 
 ### 6.1 Prerequisites
+
 * Node.js ≥ 20.0.0
 * Foundry (latest) — `curl -L https://foundry.paradigm.xyz | bash`
 * Nargo ≥ 0.38.0 — `curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash && noirup`
@@ -551,14 +620,16 @@ cd packages/dashboard && npm run dev
 # Visit http://localhost:3000
 ```
 
-> **See [DEMO.md](DEMO.md) for a detailed step-by-step walkthrough with expected output.**
-
-## 6.5 Quick Demo (with auto-detection)
+### 6.5 Quick Demo
 
 ```bash
 # Checks Redis, RPC, and contracts — falls back gracefully
 npm run demo
 ```
+
+> See [DEMO.md](DEMO.md) for a detailed step-by-step walkthrough.
+
+---
 
 ## 7. Smart Contracts
 
@@ -571,7 +642,7 @@ AgentCredit contracts handle the decentralized state and on-chain hashing valida
 | ZKVerifier | 0x394B61757c22833d0188eED6d3B302d4E276822e | Base Sepolia | [✅ Basescan](https://sepolia.basescan.org/address/0x394B61757c22833d0188eED6d3B302d4E276822e) |
 
 <details>
-<summary>📋 CreditRegistry ABI (key functions)</summary>
+<summary>📋 CreditRegistry ABI(key functions)</summary>
 
 ```json
 [
@@ -602,8 +673,9 @@ AgentCredit contracts handle the decentralized state and on-chain hashing valida
   }
 ]
 ```
-
 </details>
+
+---
 
 ## 8. Testing
 
@@ -649,6 +721,8 @@ cd packages/api && npm run simulate
 | CreditRegistry.sol | 82% | 25% | 88% |
 | ProofCache.sol | 85% | 29% | 80% |
 
+---
+
 ## 9. Security
 
 ### Vulnerability Matrix
@@ -687,7 +761,9 @@ cd packages/api && npm run simulate
 >
 > See [PRODUCTION.md](PRODUCTION.md) for the full ops runbook and incident response procedures.
 
-## 9.5 Production Architecture
+---
+
+## 10. Production Architecture
 
 | Feature | Demo (Hackathon) | Production |
 |---------|-----------------|------------|
@@ -703,7 +779,9 @@ cd packages/api && npm run simulate
 | Fuzz testing | ❌ None | ✅ Foundry invariant tests (5 invariants) |
 | Audit status | ⚠ Unaudited | 🔜 Sherlock contest (planned) |
 
-## 10. Project Structure
+---
+
+## 11. Project Structure
 
 ```text
 agentcredit/
@@ -724,109 +802,55 @@ agentcredit/
 - `dashboard/`: Next.js Web UI showing agent stats.
 - `indexer/`: The Graph indexing component.
 
-## 11. Contributing
-
-How to run tests before submitting a PR:
-- Code style: no `any` in TypeScript, Solidity follows naming conventions
-- Branch naming: `feature/`, `fix/`, `test/`
-- PR must include: description of change, test additions, verification command output
-
-## 12. Additional Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [DEMO.md](DEMO.md) | Step-by-step demo walkthrough |
-| [PRODUCTION.md](PRODUCTION.md) | Ops runbook, upgrade process, incident response |
-| [MAINNET_CHECKLIST.md](MAINNET_CHECKLIST.md) | Pre-mainnet deployment checklist |
-
-## 13. Project License
-
-MIT License -- see LICENSE for details.
+**Contributing:** no `any` in TypeScript. Branch naming: `feature/`, `fix/`, `test/`.
+PRs must include: description of change, test additions, verification command output.
 
 ---
 
-## 📖 References & Resources
+## 12. Project License
 
-The following standards, papers, tools, and documentation were used
-in the research and construction of this protocol. Listed by category.
+MIT License — see LICENSE for details.
 
-### x402 Protocol & Payment Standards
+---
 
-| Resource | Description | Link |
-|----------|-------------|------|
-| x402 Official Specification | The HTTP 402 payment standard — flow, X-PAYMENT header, facilitator model | [x402.org](https://x402.org) |
-| EIP-3009: Transfer With Authorization | The signed-auth standard powering every x402 payment | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-3009) |
-| EIP-712: Typed Structured Data Signing | Domain separators and struct hashing that bind EIP-3009 signatures | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-712) |
-| x402 SDK (TypeScript) | Official Coinbase x402 Express middleware | [github.com/coinbase/x402](https://github.com/coinbase/x402) |
+## 13. References
 
-### Account Abstraction & Smart Wallets
-
-| Resource | Description | Link |
-|----------|-------------|------|
-| ERC-4337: Account Abstraction | The UserOperation standard underlying the CreditLinePaymaster | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-4337) |
-| ERC-4337 Docs | Bundlers, EntryPoint, and Paymaster development reference | [docs.erc4337.io](https://docs.erc4337.io) |
-| ZeroDev SDK | Session keys and Paymaster abstraction in TypeScript | [docs.zerodev.app](https://docs.zerodev.app) |
-| EIP-7702 (Pectra) | EOA temporary smart contract execution — enables gas sponsorship | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-7702) |
-
-### Agent Identity & Reputation
-
-| Resource | Description | Link |
-|----------|-------------|------|
-| ERC-8004: Trustless AI Agent Identity | On-chain identity standard for AI agents | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-8004) |
-| QuickNode: ERC-8004 Developer Guide | Practical breakdown of the three ERC-8004 registries | [blog.quicknode.com](https://blog.quicknode.com/erc-8004-a-developers-guide-to-trustless-ai-agent-identity/) |
-| Inter-Agent Trust Models (arXiv 2511.03434) | Comparing A2A, AP2, and ERC-8004 trust architectures | [arxiv.org](https://arxiv.org/abs/2511.03434) |
-| A2A + x402 Integration (arXiv 2507.19550) | How x402 EIP-3009 flows compose with on-chain agent identity | [arxiv.org](https://arxiv.org/abs/2507.19550) |
-
-### Zero-Knowledge Proof System
-
-| Resource | Description | Link |
-|----------|-------------|------|
-| Noir Language Documentation | Official docs for writing ZK circuits in Noir | [noir-lang.org/docs](https://noir-lang.org/docs) |
-| noir-lang/poseidon | Poseidon hash for Noir — BN254 curve, used in the commitment scheme | [github.com/noir-lang/poseidon](https://github.com/noir-lang/poseidon) |
-| poseidon-solidity | Poseidon hash in Solidity over BN254 — matches Noir output exactly | [github.com/chancehudson/poseidon-solidity](https://github.com/chancehudson/poseidon-solidity) |
-| Poseidon Hash Reference | Formal specification of Poseidon over BN254, BLS12-381, Ed25519 | [poseidon-hash.info](https://www.poseidon-hash.info/) |
-| Nethermind Noir Audit Guide | Security gotchas when writing Noir circuits | [nethermind.io/blog](https://www.nethermind.io/blog/our-first-deep-dive-into-noir-what-zk-auditors-learned) |
-
-### Smart Contract Infrastructure
-
-| Resource | Description | Link |
-|----------|-------------|------|
-| OpenZeppelin Contracts v5 | ReentrancyGuard, AccessControl, Pausable, TimelockController | [docs.openzeppelin.com](https://docs.openzeppelin.com/contracts/5.x) |
-| OpenZeppelin Upgrades (Foundry) | UUPS proxy deployment and upgrade safety validation | [docs.openzeppelin.com](https://docs.openzeppelin.com/upgrades-plugins/foundry/foundry-upgrades) |
-| OpenZeppelin Upgradeable Contracts | Initializable, UUPSUpgradeable, AccessControlUpgradeable | [github.com/OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable) |
-| Foundry Book | Forge test, coverage, invariant testing, deployment scripts | [book.getfoundry.sh](https://book.getfoundry.sh) |
-| Viem Documentation | TypeScript EVM library used throughout the API and dashboard | [viem.sh](https://viem.sh) |
-
-### Indexing & Off-Chain Infrastructure
-
-| Resource | Description | Link |
-|----------|-------------|------|
-| The Graph Protocol | Subgraph indexer for AuthorizationUsed and ScoreUpdated events | [thegraph.com/docs](https://thegraph.com/docs/en/developing/creating-a-subgraph/) |
-| BullMQ Documentation | Redis-backed job queue powering the production facilitator bot | [docs.bullmq.io](https://docs.bullmq.io/) |
-| ioredis | Redis client for Node.js — connection config for BullMQ | [github.com/redis/ioredis](https://github.com/redis/ioredis) |
-| Pino Logger | Structured JSON logging for the API and worker | [getpino.io](https://getpino.io/) |
-
-### Security Tools
-
-| Resource | Description | Link |
-|----------|-------------|------|
-| Slither Static Analyzer | Solidity static analysis — runs in CI on every PR | [github.com/crytic/slither](https://github.com/crytic/slither) |
-| Immunefi Bug Bounty Platform | Platform for the planned bug bounty program | [immunefi.com](https://immunefi.com) |
-| Cyfrin Audit Firm | Planned private audit provider | [cyfrin.io](https://cyfrin.io) |
-| Veridise ZK Audits | Planned ZK circuit audit provider | [veridise.com](https://veridise.com) |
-
-### Further Reading
-
-| Resource | Description | Link |
-|----------|-------------|------|
-| Coinbase Base Documentation | Base Sepolia network, chain ID 84532, USDC addresses | [docs.base.org](https://docs.base.org) |
-| Circle USDC on Base | USDC contract addresses and EIP-3009 compatibility | [developers.circle.com](https://developers.circle.com) |
-| Chainlink CCIP | Cross-chain interoperability — referenced in V3 roadmap | [docs.chain.link/ccip](https://docs.chain.link/ccip) |
+- **x402 Official Specification:** The HTTP 402 payment standard — flow, X-PAYMENT header, facilitator model — [x402.org](https://x402.org)
+- **EIP-3009: Transfer With Authorization:** The signed-auth standard powering every x402 payment — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-3009)
+- **EIP-712: Typed Structured Data Signing:** Domain separators and struct hashing that bind EIP-3009 signatures — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-712)
+- **x402 SDK (TypeScript):** Official Coinbase x402 Express middleware — [github.com/coinbase/x402](https://github.com/coinbase/x402)
+- **ERC-4337: Account Abstraction:** The UserOperation standard underlying the CreditLinePaymaster — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-4337)
+- **ERC-4337 Docs:** Bundlers, EntryPoint, and Paymaster development reference — [docs.erc4337.io](https://docs.erc4337.io)
+- **ZeroDev SDK:** Session keys and Paymaster abstraction in TypeScript — [docs.zerodev.app](https://docs.zerodev.app)
+- **EIP-7702 (Pectra):** EOA temporary smart contract execution — enables gas sponsorship — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-7702)
+- **ERC-8004: Trustless AI Agent Identity:** On-chain identity standard for AI agents — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-8004)
+- **QuickNode: ERC-8004 Developer Guide:** Practical breakdown of the three ERC-8004 registries — [blog.quicknode.com](https://blog.quicknode.com/erc-8004-a-developers-guide-to-trustless-ai-agent-identity/)
+- **Inter-Agent Trust Models (arXiv 2511.03434):** Comparing A2A, AP2, and ERC-8004 trust architectures — [arxiv.org](https://arxiv.org/abs/2511.03434)
+- **A2A + x402 Integration (arXiv 2507.19550):** How x402 EIP-3009 flows compose with on-chain agent identity — [arxiv.org](https://arxiv.org/abs/2507.19550)
+- **Noir Language Documentation:** Official docs for writing ZK circuits in Noir — [noir-lang.org/docs](https://noir-lang.org/docs)
+- **noir-lang/poseidon:** Poseidon hash for Noir — BN254 curve, used in the commitment scheme — [github.com/noir-lang/poseidon](https://github.com/noir-lang/poseidon)
+- **poseidon-solidity:** Poseidon hash in Solidity over BN254 — matches Noir output exactly — [github.com/chancehudson/poseidon-solidity](https://github.com/chancehudson/poseidon-solidity)
+- **Poseidon Hash Reference:** Formal specification of Poseidon over BN254, BLS12-381, Ed25519 — [poseidon-hash.info](https://www.poseidon-hash.info/)
+- **Nethermind Noir Audit Guide:** Security gotchas when writing Noir circuits — [nethermind.io/blog](https://www.nethermind.io/blog/our-first-deep-dive-into-noir-what-zk-auditors-learned)
+- **OpenZeppelin Contracts v5:** ReentrancyGuard, AccessControl, Pausable, TimelockController — [docs.openzeppelin.com](https://docs.openzeppelin.com/contracts/5.x)
+- **OpenZeppelin Upgrades (Foundry):** UUPS proxy deployment and upgrade safety validation — [docs.openzeppelin.com](https://docs.openzeppelin.com/upgrades-plugins/foundry/foundry-upgrades)
+- **OpenZeppelin Upgradeable Contracts:** Initializable, UUPSUpgradeable, AccessControlUpgradeable — [github.com/OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable)
+- **Foundry Book:** Forge test, coverage, invariant testing, deployment scripts — [book.getfoundry.sh](https://book.getfoundry.sh)
+- **Viem Documentation:** TypeScript EVM library used throughout the API and dashboard — [viem.sh](https://viem.sh)
+- **The Graph Protocol:** Subgraph indexer for AuthorizationUsed and ScoreUpdated events — [thegraph.com/docs](https://thegraph.com/docs/en/developing/creating-a-subgraph/)
+- **BullMQ Documentation:** Redis-backed job queue powering the production facilitator bot — [docs.bullmq.io](https://docs.bullmq.io/)
+- **ioredis:** Redis client for Node.js — connection config for BullMQ — [github.com/redis/ioredis](https://github.com/redis/ioredis)
+- **Pino Logger:** Structured JSON logging for the API and worker — [getpino.io](https://getpino.io/)
+- **Slither Static Analyzer:** Solidity static analysis — runs in CI on every PR — [github.com/crytic/slither](https://github.com/crytic/slither)
+- **Immunefi Bug Bounty Platform:** Platform for the planned bug bounty program — [immunefi.com](https://immunefi.com)
+- **Cyfrin Audit Firm:** Planned private audit provider — [cyfrin.io](https://cyfrin.io)
+- **Veridise ZK Audits:** Planned ZK circuit audit provider — [veridise.com](https://veridise.com)
+- **Coinbase Base Documentation:** Base Sepolia network, chain ID 84532, USDC addresses — [docs.base.org](https://docs.base.org)
+- **Circle USDC on Base:** USDC contract addresses and EIP-3009 compatibility — [developers.circle.com](https://developers.circle.com)
+- **Chainlink CCIP:** Cross-chain interoperability — referenced in V3 roadmap — [docs.chain.link/ccip](https://docs.chain.link/ccip)
 
 ---
 
 <div align="center">
-
-**Built for the x402 ecosystem** · Powered by Base · Secured by Noir ZK
-
+Built for the x402 ecosystem · Powered by Base · Secured by Noir ZK
 </div>
