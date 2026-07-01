@@ -15,6 +15,7 @@
 | ProofCache (Proxy) | `[fill after deploy]` | Base Mainnet |
 | ProofCache (Implementation) | `[fill after deploy]` | Base Mainnet |
 | AgentCreditTimelock | `[fill after deploy]` | Base Mainnet |
+| CreditLinePaymaster | `[fill after deploy]` | Base Mainnet |
 | ZKVerifier | `[fill after deploy]` | Base Mainnet |
 | USDC | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | Base Mainnet |
 
@@ -200,6 +201,7 @@ REDIS_TLS=true
 
 # Contract addresses (fill after deployment)
 CREDIT_REGISTRY_ADDRESS=0x...
+CREDIT_LINE_PAYMASTER_ADDRESS=0x...
 PROOF_CACHE_ADDRESS=0x...
 ZK_VERIFIER_ADDRESS=0x...
 USDC_ADDRESS=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
