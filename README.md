@@ -307,107 +307,102 @@ Subsequent requests within the window reuse the cached proof receipt — no re-p
 AgentCredit consists of a modular framework allowing agents to fetch their score and prove logic entirely autonomously.
 
 <div align="center">
-<svg viewBox="0 0 780 680" width="100%" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1200 850" width="100%" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
     </marker>
+    <style>
+      text { font-family: 'Segoe Print', 'Comic Sans MS', cursive, sans-serif; fill: #333; }
+      .title { font-size: 24px; font-weight: bold; }
+      .subtitle { font-size: 18px; font-weight: bold; }
+      .small { font-size: 14px; }
+      .italic { font-style: italic; }
+    </style>
   </defs>
 
-  <!-- LAYER 5 -->
-  <text x="40" y="40" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 5 — Frontend</text>
-  <rect x="240" y="50" width="300" height="50" rx="18" ry="18" fill="#b3d9ff" stroke="#333" stroke-width="2.5" />
-  <text x="390" y="70" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="390" dy="0">Next.js Dashboard</tspan>
-    <tspan x="390" dy="18">Score Lookup + ZK Proof Generator</tspan>
-  </text>
+  <!-- LAYER 5: Frontend -->
+  <rect x="250" y="40" width="450" height="90" rx="10" ry="10" fill="#c3f0c2" stroke="#333" stroke-width="2" />
+  <text x="475" y="75" class="title" text-anchor="middle">Layer 5 — Frontend</text>
+  <text x="475" y="95" class="subtitle" text-anchor="middle">Next.js Dashboard</text>
+  <text x="475" y="115" class="small" text-anchor="middle">Score Lookup + ZK Proof Generator</text>
+
+  <!-- Arrow down -->
+  <line x1="300" y1="130" x2="300" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+  <text x="310" y="160" class="small italic">REST API</text>
+  <text x="310" y="180" class="small italic">(X-CREDIT-PROOF)</text>
+
+  <!-- LAYER 1: x402 Payment Rail -->
+  <rect x="250" y="200" width="450" height="110" rx="10" ry="10" fill="#f0c2c2" stroke="#333" stroke-width="2" />
+  <text x="475" y="235" class="title" text-anchor="middle">Layer 1 — x402 Payment Rail</text>
+  <text x="475" y="260" class="subtitle" text-anchor="middle">Express API (@x402/express)</text>
+  <text x="475" y="280" class="small" text-anchor="middle">creditGate.ts (Tiered pricing)</text>
+  <text x="475" y="300" class="small" text-anchor="middle">facilitatorHook.ts (Event enqueuer)</text>
+
+  <!-- Arrow down -->
+  <line x1="475" y1="310" x2="475" y2="390" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+  <text x="485" y="355" class="subtitle italic">viem reads onchain Events</text>
+
+  <!-- Base Sepolia Yellow Box -->
+  <rect x="50" y="390" width="850" height="360" rx="15" ry="15" fill="#fcf0b3" stroke="#333" stroke-width="2" />
+  <text x="80" y="430" class="title">Base Sepolia</text>
+
+  <!-- LAYER 4: ZK System (Green box inside yellow) -->
+  <rect x="100" y="460" width="350" height="70" rx="10" ry="10" fill="#c3f0c2" stroke="#333" stroke-width="2" />
+  <text x="275" y="490" class="title" text-anchor="middle">Layer 4 — ZK System</text>
+  <text x="275" y="515" class="small" text-anchor="middle">Noir Circuit credit_proof.nr (Off-chain)</text>
+
+  <!-- LAYER 3: Smart Contracts (Green box inside yellow) -->
+  <rect x="500" y="460" width="350" height="70" rx="10" ry="10" fill="#c3f0c2" stroke="#333" stroke-width="2" />
+  <text x="675" y="490" class="title" text-anchor="middle">Layer 3 — Smart Contracts</text>
+  <text x="675" y="515" class="small" text-anchor="middle">Core Protocol Logic</text>
+
+  <!-- Arrows from Layer 4 Green box to Blue boxes -->
+  <line x1="175" y1="530" x2="175" y2="570" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+  <line x1="375" y1="530" x2="375" y2="570" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <!-- Arrows from Layer 3 Green box to Blue boxes -->
+  <line x1="575" y1="530" x2="575" y2="570" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+  <line x1="775" y1="530" x2="775" y2="570" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <!-- Blue boxes for Layer 4 -->
+  <!-- ZKVerifier -->
+  <rect x="100" y="570" width="150" height="110" rx="10" ry="10" fill="#b3d4fc" stroke="#333" stroke-width="2" />
+  <text x="175" y="615" class="subtitle" text-anchor="middle">ZKVerifier.sol</text>
+  <text x="175" y="640" class="small" text-anchor="middle">On-chain</text>
+  <text x="175" y="660" class="small" text-anchor="middle">verifier</text>
+
+  <!-- ProofCache -->
+  <rect x="300" y="570" width="150" height="110" rx="10" ry="10" fill="#b3d4fc" stroke="#333" stroke-width="2" />
+  <text x="375" y="615" class="subtitle" text-anchor="middle">ProofCache</text>
+  <text x="375" y="640" class="small" text-anchor="middle">12h validity</text>
+  <text x="375" y="660" class="small" text-anchor="middle">window</text>
+
+
+  <!-- Blue boxes for Layer 3 -->
+  <!-- CreditRegistry -->
+  <rect x="500" y="570" width="150" height="110" rx="10" ry="10" fill="#b3d4fc" stroke="#333" stroke-width="2" />
+  <text x="575" y="615" class="subtitle" text-anchor="middle">CreditRegistry.sol</text>
+  <text x="575" y="640" class="small" text-anchor="middle">Score + Poseidon</text>
+  <text x="575" y="660" class="small" text-anchor="middle">commitment</text>
+
+  <!-- CreditLinePaymaster -->
+  <rect x="700" y="570" width="150" height="110" rx="10" ry="10" fill="#b3d4fc" stroke="#333" stroke-width="2" />
+  <text x="775" y="615" class="subtitle" text-anchor="middle">CreditLine</text>
+  <text x="775" y="635" class="subtitle" text-anchor="middle">Paymaster</text>
+  <text x="775" y="655" class="small" text-anchor="middle">ERC-4337</text>
+
+  <!-- Right-side curly braces for Layer 2: Indexer -->
+  <path d="M 950 200 Q 980 200 980 250 T 980 300 Q 980 320 1010 320 Q 980 320 980 340 T 980 400 Q 980 440 950 440" fill="none" stroke="#333" stroke-width="6" />
   
-  <line x1="390" y1="100" x2="390" y2="150" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-
-  <!-- LAYER 4 -->
-  <text x="40" y="140" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 4 — ZK System</text>
+  <!-- Layer 2 Text Details -->
+  <text x="1030" y="280" class="title" text-anchor="start">Layer 2</text>
+  <text x="1030" y="305" class="subtitle" text-anchor="start">Indexer</text>
+  <text x="1030" y="335" class="small" text-anchor="start">The Graph Subgraph</text>
+  <text x="1030" y="355" class="small italic" text-anchor="start">(AuthorizationUsed events)</text>
   
-  <rect x="100" y="150" width="160" height="50" rx="18" ry="18" fill="#ffb3b3" stroke="#333" stroke-width="2.5" />
-  <text x="180" y="170" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="180" dy="0">Noir Circuit</tspan>
-    <tspan x="180" dy="18">credit_proof.nr</tspan>
-  </text>
-  <line x1="260" y1="175" x2="310" y2="175" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-  
-  <rect x="310" y="150" width="160" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
-  <text x="390" y="170" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="390" dy="0">ZKVerifier.sol</tspan>
-    <tspan x="390" dy="18">On-chain verifier</tspan>
-  </text>
-  <line x1="470" y1="175" x2="520" y2="175" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-
-  <rect x="520" y="150" width="160" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5" />
-  <text x="600" y="170" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="600" dy="0">ProofCache</tspan>
-    <tspan x="600" dy="18">12h validity window</tspan>
-  </text>
-
-  <line x1="390" y1="200" x2="390" y2="250" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-
-  <!-- LAYER 3 -->
-  <text x="40" y="240" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 3 — Smart Contracts</text>
-  
-  <rect x="200" y="250" width="180" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
-  <text x="290" y="270" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="290" dy="0">CreditRegistry.sol</tspan>
-    <tspan x="290" dy="18">Score + Poseidon commitment</tspan>
-  </text>
-
-  <rect x="400" y="250" width="180" height="50" rx="18" ry="18" fill="#1a1a1a" stroke="#333" stroke-width="2.5" />
-  <text x="490" y="270" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="white">
-    <tspan x="490" dy="0">CreditLinePaymaster</tspan>
-    <tspan x="490" dy="18">ERC-4337 deferred gas</tspan>
-  </text>
-
-  <line x1="390" y1="300" x2="390" y2="350" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-
-  <!-- LAYER 2 -->
-  <text x="40" y="340" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 2 — Indexer</text>
-  
-  <ellipse cx="290" cy="375" rx="90" ry="25" fill="#b3d9ff" stroke="#333" stroke-width="2" />
-  <text x="290" y="365" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="290" dy="0">The Graph Subgraph</tspan>
-    <tspan x="290" dy="18">AuthorizationUsed events</tspan>
-  </text>
-
-  <line x1="380" y1="375" x2="430" y2="375" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-
-  <rect x="430" y="350" width="160" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5" />
-  <text x="510" y="370" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="510" dy="0">BullMQ Keeper Bot</tspan>
-    <tspan x="510" dy="18">recordPayment() caller</tspan>
-  </text>
-
-  <line x1="390" y1="400" x2="390" y2="450" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-
-  <!-- LAYER 1 -->
-  <text x="40" y="440" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="11" font-style="italic" fill="#333">Layer 1 — x402 Payment Rail</text>
-  
-  <rect x="100" y="450" width="160" height="50" rx="18" ry="18" fill="#ffb3b3" stroke="#333" stroke-width="2.5" />
-  <text x="180" y="470" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="180" dy="0">Express API</tspan>
-    <tspan x="180" dy="18">@x402/express</tspan>
-  </text>
-  <line x1="260" y1="475" x2="310" y2="475" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-
-  <rect x="310" y="450" width="160" height="50" rx="18" ry="18" fill="#b8f5b8" stroke="#333" stroke-width="2.5" />
-  <text x="390" y="470" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="390" dy="0">creditGate.ts</tspan>
-    <tspan x="390" dy="18">Tiered pricing</tspan>
-  </text>
-  <line x1="470" y1="475" x2="520" y2="475" stroke="#333" stroke-width="2" marker-end="url(#arrow2)" />
-
-  <rect x="520" y="450" width="160" height="50" rx="18" ry="18" fill="#ffe599" stroke="#333" stroke-width="2.5" />
-  <text x="600" y="470" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="13" text-anchor="middle" fill="#333">
-    <tspan x="600" dy="0">facilitatorHook.ts</tspan>
-    <tspan x="600" dy="18">Event enqueuer</tspan>
-  </text>
-
+  <text x="1030" y="385" class="small" text-anchor="start">BullMQ Keeper Bot</text>
+  <text x="1030" y="405" class="small italic" text-anchor="start">(recordPayment caller)</text>
 </svg>
 </div>
 
