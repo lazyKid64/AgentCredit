@@ -98,8 +98,8 @@ All smart contracts are deployed on the **Base Sepolia** test network (Chain ID:
 |----------|---------|---------------------|--------|
 | **CreditRegistry** | `0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13` | [View on Basescan](https://sepolia.basescan.org/address/0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13) | 🟢 Active |
 | **Testnet USDC** | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` | [View on Basescan](https://sepolia.basescan.org/address/0x036CbD53842c5426634e7929541eC2318f3dCF7e) | 🟢 Active |
-| **CreditLinePaymaster**| `TBD` | N/A | 🟡 Coming in V2 |
-| **ZKVerifier** | `TBD` | N/A | 🟡 Coming in V2 |
+| **CreditLinePaymaster**| `0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085` | [View on Basescan](https://sepolia.basescan.org/address/0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085) | 🟢 Active |
+| **ZKVerifier** | `0x394B61757c22833d0188eED6d3B302d4E276822e` | [View on Basescan](https://sepolia.basescan.org/address/0x394B61757c22833d0188eED6d3B302d4E276822e) | 🟢 Active |
 
 ## Table of Contents
 
@@ -567,8 +567,8 @@ AgentCredit contracts handle the decentralized state and on-chain hashing valida
 | Contract | Address | Network | Verified |
 | --- | --- | --- | --- |
 | CreditRegistry | 0x6e1219c3938Ee9de9df567616d1FC5D3b3966e13 | Base Sepolia | ✅ View on Basescan |
-| CreditLinePaymaster | Coming in V2 | Base Sepolia | — |
-| ZKVerifier | Coming in V2 | Base Sepolia | — |
+| CreditLinePaymaster | 0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085 | Base Sepolia | [✅ Basescan](https://sepolia.basescan.org/address/0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085) |
+| ZKVerifier | 0x394B61757c22833d0188eED6d3B302d4E276822e | Base Sepolia | [✅ Basescan](https://sepolia.basescan.org/address/0x394B61757c22833d0188eED6d3B302d4E276822e) |
 
 <details>
 <summary>📋 CreditRegistry ABI (key functions)</summary>
