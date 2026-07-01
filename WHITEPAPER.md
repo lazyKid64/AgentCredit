@@ -1,6 +1,4 @@
-import os
-
-content = """<div align="center">
+<div align="center">
 
 # AgentCredit Protocol
 ## Technical Whitepaper
@@ -144,7 +142,11 @@ The `CreditRegistry` acts as the canonical source of truth for agent scores. It 
 The contract enforces strict access control through three specific roles. The `FACILITATOR_ROLE` is permitted to call `recordPayment()`, which is the sole state-changing function in the critical path. The `GUARDIAN_ROLE`, designed for rapid incident response, can call `emergencyPause()` instantly, bypassing the timelock. The `SCORE_ADMIN_ROLE` is authorized to update the score weighting parameters, subject to the 48-hour timelock delay. The `DEFAULT_ADMIN_ROLE` is exclusively held by the `TimelockController`; the original deployer's admin rights were completely revoked upon deployment to ensure strict decentralization.
 
 Following any score recomputation, the registry updates the agent's `scoreCommitment` using the following construction:
-`scoreCommitment = bytes32(PoseidonT3.hash([computedScore, uint256(uint160(agent))]))`
+
+```solidity
+scoreCommitment = bytes32(PoseidonT3.hash([computedScore, uint256(uint160(agent))]));
+```
+
 This Poseidon hash (over the BN254 curve) serves as the cryptographic anchor that the ZK circuit verifies against. It is imperative that the exact same hash function is utilized in both Solidity (via the `poseidon-solidity` library) and the Noir circuit (via `dep::poseidon::bn254::hash_2`). Because the BN254 curve is native to both the EVM precompile at `0x08` and the Barretenberg proving backend, the hash computation remains highly efficient and perfectly consistent across execution environments.
 
 ### 4.3 Credit Score Formula
@@ -278,7 +280,3 @@ The immediate roadmap involves migrating the protocol to Base Mainnet following 
 4. ERC-8004: Trustless AI Agent Identity — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-8004)
 5. Noir Language Documentation — [noir-lang.org](https://noir-lang.org/docs)
 6. ERC-4337: Account Abstraction — [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-4337)
-"""
-
-with open("WHITEPAPER.md", "w", encoding="utf-8") as f:
-    f.write(content)
