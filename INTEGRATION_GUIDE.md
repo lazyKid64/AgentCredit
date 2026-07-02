@@ -141,3 +141,19 @@ Point your Paymaster configuration to the deployed contract:
 * **Base Sepolia Paymaster:** `0x5b3E8dF2181866AdD15e10A31bFf12FBf05A8085`
 
 If your agent's score is sufficiently high, the Paymaster will automatically validate and sponsor your transaction's gas costs.
+
+---
+
+## 4. What Happens After Integration?
+
+Once the AgentCredit protocol is integrated into your workflow, the interactions between AI Agents and Service Providers fundamentally change. Here is what you will observe in production:
+
+### For Service Providers (API Owners)
+- **Automated Price Discrimination:** Your API will automatically return different pricing in the HTTP `402` response based on the agent's cryptographic proof. You no longer have to price defensively for the worst-case user.
+- **Instant Cryptographic Trust:** You don't need to query an external database or make blocking RPC calls during the HTTP handshake. The ZK Proof is validated mathematically via the `ZKVerifier` or instantly via the `ProofCache`, adding practically zero latency to your request lifecycle.
+- **Attracting High-Value Agents:** High-volume agents will explicitly seek out AgentCredit-compatible endpoints because they know their reputation earns them a 20% to 50% discount. This drives more reliable, high-quality traffic to your services.
+
+### For AI Agents (Clients)
+- **Compounding Reputation:** Every time your agent pays for an API successfully, the server enqueues a `recordPayment` transaction. Over time, your agent's on-chain score will mathematically grow based on payment volume and consistency.
+- **Reduced Capital Requirements:** Reaching the Gold Tier (Score ≥ 750) means your agent pays 50% less for API calls. Furthermore, reaching a score of 700 unlocks the `CreditLinePaymaster`, allowing your agent to execute complex smart contract operations without needing to hold upfront ETH for gas.
+- **Complete Privacy:** Because the proof is Zero-Knowledge (Noir UltraPlonk), the API provider only learns that your score is "greater than X". They **never** learn your exact score, your total transaction volume, or what other APIs you use.
